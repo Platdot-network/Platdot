@@ -1,0 +1,60 @@
+<mxfile>
+    <diagram id="BzeWuSWtje4ORMCNxh40" name="第 1 页">
+        <mxGraphModel dx="2399" dy="2144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="67" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontColor=#99FF99;strokeColor=#FF8000;" parent="1" source="65" target="66" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="Chain A" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=#006EAF;strokeWidth=1;fontColor=#ffffff;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=10;fontStyle=1;fontSize=18;fillColor=#1ba1e2;" parent="1" vertex="1">
+                    <mxGeometry x="-186" y="-50" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF8000;fontColor=#FF8000;" parent="1" source="66" target="75" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="event" style="whiteSpace=wrap;html=1;shadow=0;dashed=0;fontSize=18;fontColor=#ffffff;fontStyle=1;strokeColor=#006EAF;strokeWidth=1;spacingLeft=10;fillColor=#1ba1e2;" parent="1" vertex="1">
+                    <mxGeometry x="-26" y="-30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF8000;fontColor=#FF8000;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="75" target="71" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="258.25" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="74" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF8000;fontColor=#FF8000;" parent="1" source="71" target="73" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="Message" style="whiteSpace=wrap;html=1;shadow=0;dashed=0;fontSize=18;fontColor=#ffffff;fontStyle=1;strokeColor=#001DBC;strokeWidth=1;fillColor=#0050ef;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="329" y="-30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#FF8000;fontColor=#FF8000;" parent="1" source="73" target="77" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="Writer" style="ellipse;whiteSpace=wrap;html=1;shadow=0;dashed=0;fontSize=18;fontColor=#ffffff;fontStyle=1;strokeColor=#A50040;strokeWidth=1;fillColor=#d80073;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="514" y="-40" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="Listener" style="ellipse;whiteSpace=wrap;html=1;shadow=0;dashed=0;fontSize=18;fontColor=#ffffff;fontStyle=1;strokeColor=#006EAF;strokeWidth=1;fillColor=#1ba1e2;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="154" y="-40" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;strokeColor=#FF8000;fontColor=#FF8000;" parent="1" source="77" target="80" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="Transaction" style="whiteSpace=wrap;html=1;shadow=0;dashed=0;fontSize=18;fontColor=#ffffff;fontStyle=1;strokeColor=#A50040;strokeWidth=1;fillColor=#d80073;spacingLeft=10;" parent="1" vertex="1">
+                    <mxGeometry x="714" y="-30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="Chain B" style="html=1;shadow=0;dashed=0;shape=mxgraph.bootstrap.rrect;rSize=5;strokeColor=#A50040;strokeWidth=1;fontColor=#ffffff;whiteSpace=wrap;align=center;verticalAlign=middle;spacingLeft=10;fontStyle=1;fontSize=18;fillColor=#d80073;" parent="1" vertex="1">
+                    <mxGeometry x="898" y="-51" width="100" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="&lt;font color=&quot;#1ba1e2&quot;&gt;1. An event is emitted from a watched &lt;br&gt;contract on the source chain&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;fontColor=#FF8000;" parent="1" vertex="1">
+                    <mxGeometry x="-166" y="-149" width="424" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="&lt;font color=&quot;#1ba1e2&quot;&gt;2. A handler parses the event &lt;br&gt;into a message&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;fontColor=#FF8000;" parent="1" vertex="1">
+                    <mxGeometry x="84" y="50" width="424" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="&lt;font color=&quot;#d80073&quot;&gt;3. writer parses the message&amp;nbsp;into a &lt;br&gt;valid transaction and submit to chain&lt;/font&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;fontColor=#FF8000;" parent="1" vertex="1">
+                    <mxGeometry x="505" y="-154" width="453" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
