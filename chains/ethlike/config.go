@@ -15,6 +15,8 @@ import (
 	"github.com/rjman-ljm/platdot-utils/msg"
 )
 
+
+const DefaultNetworkId = 0
 const DefaultGasLimit = 6721975
 const DefaultGasPrice = 20000000000
 const DefaultBlockConfirmations = 10

@@ -43,7 +43,7 @@ func parseLostAddress(cfg *core.ChainConfig) string {
 }
 
 func parseUseExtended(cfg *core.ChainConfig) bool {
-	if b, ok := cfg.Opts["useExtendedCall"]; ok {
+	if b, ok := cfg.Opts["UseExtendedCall"]; ok {
 		res, err := strconv.ParseBool(b)
 		if err != nil {
 			panic(err)

@@ -14,7 +14,6 @@ import (
 
 //TestParseChainConfig tests parseChainConfig with all handlerContracts provided
 func TestParseChainConfig(t *testing.T) {
-
 	input := core.ChainConfig{
 		Name:         "chain",
 		Id:           1,
@@ -61,7 +60,7 @@ func TestParseChainConfig(t *testing.T) {
 	}
 
 	if !reflect.DeepEqual(&expected, out) {
-		t.Fatalf("Output not expected.\n\tExpected: %#v\n\tGot: %#v\n", &expected, out)
+		t.Fatalf("Output not expected.\n\tExpected:\n%#v\n\tGot:\n%#v\n", &expected, out)
 	}
 }
 

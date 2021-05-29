@@ -11,7 +11,7 @@ import (
 
 func TestParseStartBlock(t *testing.T) {
 	// Valid option included in config
-	cfg := &core.ChainConfig{Opts: map[string]string{"startBlock": "1000"}}
+	cfg := &core.ChainConfig{Opts: map[string]string{"StartBlock": "1000"}}
 
 	blk := parseStartBlock(cfg)
 

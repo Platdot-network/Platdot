@@ -126,14 +126,6 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 		return nil, err
 	}
 
-	//chainId, err := bridgeContract.ChainID(conn.CallOpts())
-	//if err != nil {
-	//	return nil, err
-	//}
-	//if chainId != uint8(chainCfg.Id) {
-	//	return nil, fmt.Errorf("chainId (%d) and configuration chainId (%d) do not match", chainId, chainCfg.Id)
-	//}
-
 	//if chainCfg.LatestBlock {
 	if cfg.startBlock.Uint64() == 0 {
 		curr, err := conn.LatestBlock()
