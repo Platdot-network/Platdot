@@ -1,0 +1,26 @@
+{
+  "chains": [
+    {
+      "name": "polkadot",
+      "type": "substrate",
+      "id": "1",
+      "endpoint": "",
+      "from": "",
+      "opts": {
+      }
+    },
+    {
+      "name": "bsc",
+      "type": "ethereum",
+      "id": "2",
+      "endpoint": "",
+      "from": "",
+      "opts": {
+        "bridge": "",
+        "erc20Handler": "",
+        "http": "true",
+        "networkId": ""
+      }
+    }
+  ]
+}
