@@ -157,14 +157,7 @@ func (p *proposal) encode() ([]byte, error) {
 	}{p.depositNonce, p.call})
 }
 
-func (w *writer) createMultiSigTx(m msg.Message) {
-	/// If there is a duplicate transaction, wait for it to complete
-	w.checkRepeat(m)
-
-	if m.Destination != w.listener.chainId {
-		return
-	}
-
+func (w *writer) processMessage(m msg.Message) {
 	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
 	w.log.Info(StartATx, "DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
 	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
@@ -176,7 +169,34 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 		DestAmount:   string(m.Payload[0].([]byte)),
 	}
 	w.messages[destMessage] = true
+}
 
+func (w *writer) deleteMessage(m msg.Message, currentTx MultiSignTx) {
+	var mutex sync.Mutex
+	mutex.Lock()
+
+	/// Delete Listener msTx
+	delete(w.listener.asMulti, currentTx)
+
+	/// Delete Message
+	dm := Dest{
+		DepositNonce: m.DepositNonce,
+		DestAddress:  string(m.Payload[1].([]byte)),
+		DestAmount:   string(m.Payload[0].([]byte)),
+	}
+	delete(w.messages, dm)
+
+	mutex.Unlock()
+}
+
+func (w *writer) createMultiSigTx(m msg.Message) {
+	/// If there is a duplicate transaction, wait for it to complete
+	w.checkRepeat(m)
+
+	if m.Destination != w.listener.chainId {
+		return
+	}
+	w.processMessage(m)
 	go func()  {
 		// calculate spend time
 		start := time.Now()
@@ -201,28 +221,10 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 			}
 			isFinished, currentTx := w.redeemTx(message)
 			if isFinished {
-				var mutex sync.Mutex
-				mutex.Lock()
-
 				/// If curTx is UnKnownError
 				if currentTx == UnKnownError {
 					w.log.Error(MultiSigExtrinsicError, "DepositNonce", m.DepositNonce)
-
-					var mutex sync.Mutex
-					mutex.Lock()
-
-					/// Delete Listener msTx
-					delete(w.listener.asMulti, currentTx)
-
-					/// Delete Message
-					dm := Dest{
-						DepositNonce: m.DepositNonce,
-						DestAddress:  string(m.Payload[1].([]byte)),
-						DestAmount:   string(m.Payload[0].([]byte)),
-					}
-					delete(w.messages, dm)
-
-					mutex.Unlock()
+					w.deleteMessage(m, currentTx)
 					break
 				}
 
@@ -234,22 +236,7 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 				/// Executed or UnKnownError
 				if currentTx != YesVoted && currentTx != NotExecuted && currentTx != UnKnownError {
 					w.log.Info(MultiSigExtrinsicExecuted, "DepositNonce", m.DepositNonce, "OriginBlock", currentTx.Block)
-
-					var mutex sync.Mutex
-					mutex.Lock()
-
-					/// Delete Listener msTx
-					delete(w.listener.asMulti, currentTx)
-
-					/// Delete Message
-					dm := Dest{
-						DepositNonce: m.DepositNonce,
-						DestAddress:  string(m.Payload[1].([]byte)),
-						DestAmount:   string(m.Payload[0].([]byte)),
-					}
-					delete(w.messages, dm)
-
-					mutex.Unlock()
+					w.deleteMessage(m, currentTx)
 					break
 				}
 			}

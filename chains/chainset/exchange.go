@@ -13,21 +13,13 @@ func (bc *BridgeCore) GetSubChainRecipient(m msg.Message) interface{} {
 	var multiAddressRecipient types.MultiAddress
 	var addressRecipient types.Address
 
-	// TODO: modify deal method
-	if m.Source == IdBSC || m.Source == IdKovan || m.Source == IdHeco {
-		multiAddressRecipient = types.NewMultiAddressFromAccountID(m.Payload[1].([]byte))
-		addressRecipient = types.NewAddressFromAccountID(m.Payload[1].([]byte))
-	} else {
-		multiAddressRecipient, _ = types.NewMultiAddressFromHexAccountID(string(m.Payload[1].([]byte)))
-		addressRecipient, _ = types.NewAddressFromHexAccountID(string(m.Payload[1].([]byte)))
-	}
+	multiAddressRecipient, _ = types.NewMultiAddressFromHexAccountID(string(m.Payload[1].([]byte)))
+	addressRecipient, _ = types.NewAddressFromHexAccountID(string(m.Payload[1].([]byte)))
 
 	chainType := bc.ChainInfo.Type
 	if chainType == ChainXAssetV1Like || chainType == ChainXV1Like {
-		//fmt.Println("Return address recipient")
 		return addressRecipient
 	} else {
-		//fmt.Println("Return MultiAddress recipient")
 		return multiAddressRecipient
 	}
 }
@@ -37,7 +29,6 @@ func (bc *BridgeCore) GetAmountToSub(origin []byte, assetId xevents.AssetId) (*b
 	if err != nil {
 		return big.NewInt(0), err
 	}
-	//fmt.Printf("Currency is %v\n", currency)
 	return bc.CalculateAmountToSub(origin, currency.Difference, currency.FixedFee, currency.ExtraFeeRate, currency.Name)
 }
 
@@ -46,7 +37,6 @@ func (bc *BridgeCore) GetAmountToEth(origin []byte, assetId xevents.AssetId) (*b
 	if err != nil {
 		return big.NewInt(0), err
 	}
-	//fmt.Printf("Currency is %v\n", currency)
 	return bc.CalculateAmountToEth(origin, currency.Difference, currency.FixedFee, currency.ExtraFeeRate, currency.Name)
 }
 

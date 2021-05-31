@@ -23,8 +23,6 @@ func (r *mockRouter) Send(message msg.Message) error {
 	return nil
 }
 
-
-
 func verifyResultingMessage(t *testing.T, r *mockRouter, sysErr chan error, expected msg.Message) {
 	// Verify message
 	select {

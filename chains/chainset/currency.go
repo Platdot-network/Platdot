@@ -50,10 +50,10 @@ type Currency struct {
 }
 
 var currencies = []Currency{
-	{OriginAsset, 	ResourceIdOrigin, TokenKSM, 	DiffKSM, 		FixedKSMFee, ExtraFeeRate},
-	{OriginAsset, 	ResourceIdOrigin, TokenDOT, 	DiffDOT, 		FixedDOTFee, ExtraFeeRate},
-	{OriginAsset, 	ResourceIdOrigin, TokenPCX, 	DiffPCX, 		FixedPCXFee, ExtraFeeRate},
-	{AssetXBTC, 		ResourceIdXBTC, TokenXBTC	, 	DiffXBTC, 	    0,			 ExtraNoneFeeRate},
+	{OriginAsset, 	ResourceIdOrigin, TokenKSM, 		DiffKSM, 		FixedKSMFee, ExtraFeeRate},
+	{OriginAsset, 	ResourceIdOrigin, TokenDOT, 		DiffDOT, 		FixedDOTFee, ExtraFeeRate},
+	{OriginAsset, 	ResourceIdOrigin, TokenPCX, 		DiffPCX, 		FixedPCXFee, ExtraFeeRate},
+	{AssetXBTC, 		ResourceIdXBTC,   TokenXBTC	, 	DiffXBTC, 	    0,			 ExtraNoneFeeRate},
 	{XAssetId, 		ResourceIdXAsset ,TokenXAsset, 	DiffXAsset, 	0,			 ExtraNoneFeeRate},
 }
 

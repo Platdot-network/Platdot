@@ -13,8 +13,23 @@ import (
 	"github.com/rjman-ljm/platdot-utils/core"
 )
 
+// Chain specific options
+var (
+	StartBlockOpt         = "StartBlock"
+	EndBlockOpt           = "EndBlock"
+	LostAddressOpt        = "LostAddress"
+	UseExtendedCallOpt	  = "UseExtendedCall"
+	TotalRelayerOpt       = "TotalRelayer"
+	CurrentRelayerNumberOpt = "CurrentRelayerNumber"
+	MultiSignAddressOpt   = "MultiSignAddress"
+	MaxWeightOpt          = "MaxWeight"
+	DestIdOpt			  = "DestId"
+	ResourceIdOpt         = "ResourceId"
+	MultiSignThresholdOpt = "MultiSignThreshold"
+)
+
 func parseStartBlock(cfg *core.ChainConfig) uint64 {
-	if blk, ok := cfg.Opts["StartBlock"]; ok {
+	if blk, ok := cfg.Opts[StartBlockOpt]; ok {
 		res, err := strconv.ParseUint(blk, 10, 32)
 		if err != nil {
 			panic(err)
@@ -24,7 +39,7 @@ func parseStartBlock(cfg *core.ChainConfig) uint64 {
 	return 0
 }
 func parseEndBlock(cfg *core.ChainConfig) uint64 {
-	if blk, ok := cfg.Opts["EndBlock"]; ok {
+	if blk, ok := cfg.Opts[EndBlockOpt]; ok {
 		res, err := strconv.ParseUint(blk, 10, 32)
 		if err != nil {
 			panic(err)
@@ -35,7 +50,7 @@ func parseEndBlock(cfg *core.ChainConfig) uint64 {
 }
 
 func parseLostAddress(cfg *core.ChainConfig) string {
-	if lostAddress, ok := cfg.Opts["LostAddress"]; ok {
+	if lostAddress, ok := cfg.Opts[LostAddressOpt]; ok {
 		return lostAddress
 	} else {
 		return ""
@@ -43,7 +58,7 @@ func parseLostAddress(cfg *core.ChainConfig) string {
 }
 
 func parseUseExtended(cfg *core.ChainConfig) bool {
-	if b, ok := cfg.Opts["UseExtendedCall"]; ok {
+	if b, ok := cfg.Opts[UseExtendedCallOpt]; ok {
 		res, err := strconv.ParseBool(b)
 		if err != nil {
 			panic(err)
@@ -55,7 +70,7 @@ func parseUseExtended(cfg *core.ChainConfig) bool {
 
 func parseOtherRelayer(cfg *core.ChainConfig) []types.AccountID {
 	var otherSignatories []types.AccountID
-	if totalRelayer, ok := cfg.Opts["TotalRelayer"]; ok {
+	if totalRelayer, ok := cfg.Opts[TotalRelayerOpt]; ok {
 		total, _ := strconv.ParseUint(totalRelayer, 10, 32)
 		for i := uint64(1); i < total; i++ {
 			relayedKey := "OtherRelayer" + string(strconv.Itoa(int(i)))
@@ -77,23 +92,23 @@ func parseMultiSignConfig(cfg *core.ChainConfig) (uint64, uint64, uint16) {
 	total := uint64(3)
 	current := uint64(1)
 	threshold := uint64(2)
-	if totalRelayer, ok := cfg.Opts["TotalRelayer"]; ok {
+	if totalRelayer, ok := cfg.Opts[TotalRelayerOpt]; ok {
 		total, _ = strconv.ParseUint(totalRelayer, 10, 32)
 	}
-	if currentRelayerNumber, ok := cfg.Opts["CurrentRelayerNumber"]; ok {
+	if currentRelayerNumber, ok := cfg.Opts[CurrentRelayerNumberOpt]; ok {
 		current, _ = strconv.ParseUint(currentRelayerNumber, 10, 32)
 		if current == 0 {
 			log.Error("Please set config opts 'CurrentRelayerNumber' from 1 to ...!")
 		}
 	}
-	if multiSignThreshold, ok := cfg.Opts["MultiSignThreshold"]; ok {
+	if multiSignThreshold, ok := cfg.Opts[MultiSignThresholdOpt]; ok {
 		threshold, _ = strconv.ParseUint(multiSignThreshold, 10, 32)
 	}
 	return total, current, uint16(threshold)
 }
 
 func parseMultiSignAddress(cfg *core.ChainConfig) types.AccountID {
-	if multisignAddress, ok := cfg.Opts["MultiSignAddress"]; ok {
+	if multisignAddress, ok := cfg.Opts[MultiSignAddressOpt]; ok {
 		multiSignPk, _ := types.HexDecodeString(multisignAddress)
 		multiSignAccount := types.NewAccountID(multiSignPk)
 		return multiSignAccount
@@ -111,7 +126,7 @@ func parseUrl(cfg *core.ChainConfig) string {
 }
 
 func parseMaxWeight(cfg *core.ChainConfig) uint64 {
-	if weight, ok := cfg.Opts["MaxWeight"]; ok {
+	if weight, ok := cfg.Opts[MaxWeightOpt]; ok {
 		res, _ := strconv.ParseUint(weight, 10, 32)
 		return res
 	}
@@ -119,7 +134,7 @@ func parseMaxWeight(cfg *core.ChainConfig) uint64 {
 }
 
 func parseDestId(cfg *core.ChainConfig) msg.ChainId {
-	if id, ok := cfg.Opts["DestId"]; ok {
+	if id, ok := cfg.Opts[DestIdOpt]; ok {
 		res, err := strconv.ParseUint(id, 10, 32)
 		if err != nil {
 			panic(err)
@@ -130,7 +145,7 @@ func parseDestId(cfg *core.ChainConfig) msg.ChainId {
 }
 
 func parseResourceId(cfg *core.ChainConfig) msg.ResourceId {
-	if resource, ok := cfg.Opts["ResourceId"]; ok {
+	if resource, ok := cfg.Opts[ResourceIdOpt]; ok {
 		return msg.ResourceIdFromSlice(common.FromHex(resource))
 	}
 	return msg.ResourceIdFromSlice(common.FromHex("0x0000000000000000000000000000000000000000000000000000000000000000"))

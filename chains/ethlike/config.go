@@ -39,7 +39,6 @@ var (
 	BlockConfirmationsOpt = "blockConfirmations"
 	PrefixOpt             = "prefix"
 	NetworkIdOpt          = "networkId"
-
 )
 
 // Config encapsulates all necessary parameters in ethereum compatible forms
