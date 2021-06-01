@@ -143,6 +143,9 @@ func run(ctx *cli.Context) error {
 
 	cfg, err := config.GetConfig(ctx)
 	if err != nil {
+		if err.Error() != config.EndPointParseError.Error() {
+			log.Debug("parse config err", err)
+		}
 		return err
 	}
 
@@ -152,8 +155,10 @@ func run(ctx *cli.Context) error {
 	if key := ctx.String(config.TestKeyFlag.Name); key != "" {
 		ks = key
 		insecure = true
-	} else {
+	} else if cfg.KeystorePath != "" {
 		ks = cfg.KeystorePath
+	} else {
+		ks = config.DefaultKeystorePath
 	}
 
 	// Used to signal core shutdown due to fatal error

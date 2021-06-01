@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Platdot-network/Platdot/bindings/Bridge"
 	"github.com/Platdot-network/Platdot/bindings/ERC20Handler"
+	"github.com/Platdot-network/Platdot/config"
 	utils "github.com/Platdot-network/Platdot/shared/ethlike"
 	ethtest "github.com/Platdot-network/Platdot/shared/ethlike/testing"
 	"github.com/hacpy/go-ethereum/common"
@@ -76,7 +77,7 @@ func verifyMessage(t *testing.T, r *MockRouter, expected msg.Message, errs chan 
 }
 
 func TestListener_start_stop(t *testing.T) {
-	client := ethtest.NewClient(t, TestEndpoint, AliceKp)
+	client := ethtest.NewClient(t, TestEndpoint[config.InitialEndPointId], AliceKp)
 	contracts := deployTestContracts(t, client, aliceTestConfig.id)
 	stop := make(chan int)
 	l, _ := createTestListener(t, aliceTestConfig, contracts, stop, nil)
@@ -91,7 +92,7 @@ func TestListener_start_stop(t *testing.T) {
 }
 
 func TestListener_Erc20DepositedEvent(t *testing.T) {
-	client := ethtest.NewClient(t, TestEndpoint, AliceKp)
+	client := ethtest.NewClient(t, TestEndpoint[config.InitialEndPointId], AliceKp)
 	contracts := deployTestContracts(t, client, aliceTestConfig.id)
 	errs := make(chan error)
 	l, router := createTestListener(t, aliceTestConfig, contracts, make(chan int), errs)

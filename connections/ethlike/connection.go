@@ -60,11 +60,22 @@ func NewConnection(chainId uint64, endpoint string, http bool, kp *secp256k1.Key
 	}
 }
 
+func (c *Connection) GetEndPoint() string {
+	return c.endpoint
+}
+
+func (c *Connection) Reconnect(endpoint string) error {
+	c.endpoint = endpoint
+	err := c.Connect()
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 // Connect starts the ethereum WS connection
 func (c *Connection) Connect() error {
-	c.log.Info("Connecting to chain...", "url", c.endpoint)
-
+	//c.log.Info("Connecting to chain...", "url", c.endpoint)
 	var rpcClient *rpc.Client
 	var err error
 
@@ -113,12 +124,6 @@ func (c *Connection) newTransactOpts(value, gasLimit, gasPrice *big.Int) (*bind.
 		return nil, 0, err
 	}
 
-	//id, err := c.conn.ChainID(context.Background())
-	//if err != nil {
-	//	return nil, 0, err
-	//}
-	//fmt.Printf("id, err := c.conn.ChainID(context.Background()) get id = %v\n", id)
-
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(int64(c.conn.GetChainID())))
 	if err != nil {
 		return nil, 0, err
@@ -150,7 +155,6 @@ func (c *Connection) CallOpts() *bind.CallOpts {
 }
 
 func (c *Connection) SafeEstimateGas(ctx context.Context) (*big.Int, error) {
-
 	suggestedGasPrice, err := c.conn.SuggestGasPrice(context.TODO())
 
 	if err != nil {
@@ -168,7 +172,6 @@ func (c *Connection) SafeEstimateGas(ctx context.Context) (*big.Int, error) {
 }
 
 func multiplyGasPrice(gasEstimate *big.Int, gasMultiplier *big.Float) *big.Int {
-
 	gasEstimateFloat := new(big.Float).SetInt(gasEstimate)
 
 	result := gasEstimateFloat.Mul(gasEstimateFloat, gasMultiplier)

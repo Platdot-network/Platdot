@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Platdot-network/Platdot/chains/chainset"
-	"github.com/rjman-ljm/substrate-go/client"
 	"github.com/rjman-ljm/substrate-go/expand/chainx"
 	"github.com/rjman-ljm/substrate-go/models"
 
@@ -37,7 +36,6 @@ type listener struct {
 	sysErr        chan<- error
 	latestBlock   metrics.LatestBlock
 	metrics       *metrics.ChainMetrics
-	client        *client.Client
 	multiSigAddr  types.AccountID
 	curTx         MultiSignTx
 	asMulti       map[MultiSignTx]MultiSigAsMulti
@@ -56,9 +54,10 @@ var BlockRetryInterval = time.Second * 5
 var BlockRetryLimit = 15
 var RedeemRetryLimit = 15
 
-func NewListener(conn *Connection, name string, id msg.ChainId, startBlock uint64, endBlock uint64, lostAddress string, log log15.Logger, bs blockstore.Blockstorer,
-	stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics, multiSignAddress types.AccountID, cli *client.Client,
-	resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.BridgeCore) *listener {
+func NewListener(
+	conn *Connection, name string, id msg.ChainId, startBlock uint64, endBlock uint64, lostAddress string,
+	log log15.Logger, bs blockstore.Blockstorer, stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics,
+	multiSignAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.BridgeCore) *listener {
 	return &listener{
 		name:          	name,
 		chainId:       	id,
@@ -73,7 +72,6 @@ func NewListener(conn *Connection, name string, id msg.ChainId, startBlock uint6
 		sysErr:        sysErr,
 		latestBlock:   metrics.LatestBlock{LastUpdated: time.Now()},
 		metrics:       m,
-		client:        cli,
 		multiSigAddr:  multiSignAddress,
 		asMulti:       make(map[MultiSignTx]MultiSigAsMulti, InitCapacity),
 		resourceId:    resource,
@@ -90,7 +88,7 @@ func (l *listener) setRouter(r chains.Router) {
 // start creates the initial subscription for all events
 func (l *listener) start() error {
 	// Check whether latest is less than starting block
-	header, err := l.client.Api.RPC.Chain.GetHeaderLatest()
+	header, err := l.conn.cli.Api.RPC.Chain.GetHeaderLatest()
 	if err != nil {
 		return err
 	}
@@ -131,20 +129,19 @@ func (l *listener) connect() {
 }
 
 func (l *listener) reconnect() {
-	ClientRetryLimit := BlockRetryLimit*BlockRetryLimit
+	ClientRetryLimit := BlockRetryLimit
 	for {
 		if ClientRetryLimit == 0 {
-			l.log.Error("Retry...", "chain", l.name)
-			cli, err := client.New(l.conn.url)
-			if err == nil {
-				bc := chainset.NewBridgeCore(l.name)
-				bc.InitializeClientPrefix(cli)
-				l.client = cli
+			err := l.conn.Reconnect()
+			l.log.Info("Connecting to another endpoint", "EndPoint", l.conn.url)
+			if err != nil {
+				l.log.Error("Reconnect Error", "EndPoint", l.conn.url)
 			}
 			ClientRetryLimit = BlockRetryLimit
 		}
+
 		// Check whether latest is less than starting block
-		header, err := l.client.Api.RPC.Chain.GetHeaderLatest()
+		header, err := l.conn.cli.Api.RPC.Chain.GetHeaderLatest()
 		if err != nil {
 			time.Sleep(BlockRetryInterval)
 			ClientRetryLimit--
@@ -152,7 +149,7 @@ func (l *listener) reconnect() {
 		}
 		l.startBlock = uint64(header.Number)
 
-		_, err = l.client.Api.RPC.Chain.GetFinalizedHead()
+		_, err = l.conn.cli.Api.RPC.Chain.GetFinalizedHead()
 		if err != nil {
 			time.Sleep(BlockRetryInterval)
 			continue
@@ -189,11 +186,11 @@ func (l *listener) pollBlocks() error {
 		default:
 			// No more retries, goto next block
 			if retry == 0 {
-				return fmt.Errorf("event polling retries exceeded (chain=%d, name=%s)", l.chainId, l.name)
+				return fmt.Errorf("polling retries exceeded (chain=%d, name=%s)", l.chainId, l.name)
 			}
 
 			/// Get finalized block hash
-			finalizedHash, err := l.client.Api.RPC.Chain.GetFinalizedHead()
+			finalizedHash, err := l.conn.cli.Api.RPC.Chain.GetFinalizedHead()
 			if err != nil {
 				l.log.Error("Failed to fetch finalized hash", "err", err)
 				retry--
@@ -202,7 +199,7 @@ func (l *listener) pollBlocks() error {
 			}
 
 			// Get finalized block header
-			finalizedHeader, err := l.client.Api.RPC.Chain.GetHeader(finalizedHash)
+			finalizedHeader, err := l.conn.cli.Api.RPC.Chain.GetHeader(finalizedHash)
 			if err != nil {
 				l.log.Error("Failed to fetch finalized header", "err", err)
 				retry--
@@ -279,7 +276,7 @@ func (l *listener) processBlockExtrinsic(currentBlock int64) {
 			break
 		}
 
-		resp, err := l.client.GetBlockByNumber(currentBlock)
+		resp, err := l.conn.cli.GetBlockByNumber(currentBlock)
 		if err != nil {
 			if retryTimes == BlockRetryLimit / 2 {
 				l.logErr(GetBlockByNumberError, err)

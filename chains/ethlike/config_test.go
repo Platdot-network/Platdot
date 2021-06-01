@@ -13,7 +13,7 @@ func TestParseChainConfig(t *testing.T) {
 	// No opts provided
 	input := core.ChainConfig{
 		Id:           0,
-		Endpoint:     "endpoint",
+		Endpoint:     []string{"endpoint"},
 		From:         "0x0",
 		KeystorePath: "./keys",
 		Insecure:     false,
@@ -29,7 +29,7 @@ func TestParseChainConfig(t *testing.T) {
 	// Empty bridgeContract provided
 	input = core.ChainConfig{
 		Id:           0,
-		Endpoint:     "endpoint",
+		Endpoint:     []string{"endpoint"},
 		From:         "0x0",
 		KeystorePath: "./keys",
 		Insecure:     false,
@@ -48,7 +48,7 @@ func TestExtraOpts(t *testing.T) {
 	input := core.ChainConfig{
 		Name:         "chain",
 		Id:           1,
-		Endpoint:     "endpoint",
+		Endpoint:     []string{"endpoint"},
 		From:         "0x0",
 		KeystorePath: "./keys",
 		Insecure:     false,

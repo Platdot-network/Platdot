@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/bindings/Bridge"
+	"github.com/Platdot-network/Platdot/config"
 	connection "github.com/Platdot-network/Platdot/connections/ethlike"
 	utils "github.com/Platdot-network/Platdot/shared/ethlike"
 	"github.com/hacpy/go-ethereum/common"
@@ -14,7 +15,7 @@ import (
 	"time"
 )
 
-const TestEndpoint = "ws://localhost:8545"
+var TestEndpoint = []string{"ws://localhost:8545"}
 
 var TestLogger = newTestLogger("test")
 var TestTimeout = time.Second * 30
@@ -66,7 +67,7 @@ func newLocalConnection(t *testing.T, cfg *Config) *connection.Connection {
 	kp := keystore.TestKeyRing.EthereumKeys[cfg.from]
 	conn := connection.NewConnection(
 		DefaultNetworkId,
-		TestEndpoint,
+		TestEndpoint[config.InitialEndPointId],
 		false,
 		kp,
 		TestLogger,

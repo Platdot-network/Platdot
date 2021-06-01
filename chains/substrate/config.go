@@ -15,17 +15,20 @@ import (
 
 // Chain specific options
 var (
-	StartBlockOpt         = "StartBlock"
-	EndBlockOpt           = "EndBlock"
-	LostAddressOpt        = "LostAddress"
-	UseExtendedCallOpt	  = "UseExtendedCall"
-	TotalRelayerOpt       = "TotalRelayer"
-	CurrentRelayerNumberOpt = "CurrentRelayerNumber"
-	MultiSignAddressOpt   = "MultiSignAddress"
-	MaxWeightOpt          = "MaxWeight"
-	DestIdOpt			  = "DestId"
-	ResourceIdOpt         = "ResourceId"
-	MultiSignThresholdOpt = "MultiSignThreshold"
+	StartBlockOpt         = "startBlock"
+	EndBlockOpt           = "endBlock"
+	LostAddressOpt        = "lostAddress"
+	UseExtendedCallOpt	  = "useExtendedCall"
+	TotalRelayerOpt       = "totalRelayer"
+	//OtherRelayersOpt	  = "otherRelayers"
+	CurrentRelayerNumberOpt = "currentRe2layerNumber"
+	MultiSignAddressOpt   = "multiSignAddress"
+	MaxWeightOpt          = "maxWeight"
+	DestIdOpt			  = "destId"
+	ResourceIdOpt         = "resourceId"
+	MultiSignThresholdOpt = "multiSignThreshold"
+
+	OtherRelayerOpt       = "otherRelayer"
 )
 
 func parseStartBlock(cfg *core.ChainConfig) uint64 {
@@ -57,6 +60,27 @@ func parseLostAddress(cfg *core.ChainConfig) string {
 	}
 }
 
+//func parseOtherRelayers(cfg *core.ChainConfig) string {
+//	var otherSignatories []types.AccountID
+//	if totalRelayer, ok := cfg.Opts[TotalRelayerOpt]; ok {
+//		total, _ := strconv.ParseUint(totalRelayer, 10, 32)
+//		if int(total) != len(cfg.Opts[OtherRelayersOpt]) - 1 {
+//			log.Warn("Please check config 'TotalRelayer' and `OtherRelayers`")
+//		}
+//		for k,v := range cfg.Opts[OtherRelayersOpt] {
+//			address, _ := types.NewAddressFromHexAccountID(v)
+//			otherSignatories = append(otherSignatories, address.AsAccountID)
+//			} else {
+//				log.Warn("Please set config 'OtherRelayer' from 1 to ...!")
+//				log.Error("Polkadot OtherRelayer Not Found", "OtherRelayerNumber", i)
+//			}
+//		}
+//	} else {
+//		//log.Error("Please set config opts 'TotalRelayer'.")
+//	}
+//	return otherSignatories
+//}
+
 func parseUseExtended(cfg *core.ChainConfig) bool {
 	if b, ok := cfg.Opts[UseExtendedCallOpt]; ok {
 		res, err := strconv.ParseBool(b)
@@ -73,7 +97,7 @@ func parseOtherRelayer(cfg *core.ChainConfig) []types.AccountID {
 	if totalRelayer, ok := cfg.Opts[TotalRelayerOpt]; ok {
 		total, _ := strconv.ParseUint(totalRelayer, 10, 32)
 		for i := uint64(1); i < total; i++ {
-			relayedKey := "OtherRelayer" + string(strconv.Itoa(int(i)))
+			relayedKey := OtherRelayerOpt + strconv.Itoa(int(i))
 			if relayer, ok := cfg.Opts[relayedKey]; ok {
 				address, _ := types.NewAddressFromHexAccountID(relayer)
 				otherSignatories = append(otherSignatories, address.AsAccountID)
@@ -116,13 +140,6 @@ func parseMultiSignAddress(cfg *core.ChainConfig) types.AccountID {
 		//log.Error("Polkadot MultiAddress Not Found")
 	}
 	return types.AccountID{}
-}
-
-func parseUrl(cfg *core.ChainConfig) string {
-	if len(cfg.Endpoint) > 0 {
-		return cfg.Endpoint
-	}
-	return ""
 }
 
 func parseMaxWeight(cfg *core.ChainConfig) uint64 {

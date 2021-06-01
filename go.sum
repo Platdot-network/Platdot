@@ -552,6 +552,10 @@ github.com/rjman-ljm/go-substrate-crypto v1.0.0 h1:8nuZAfQT/erlu5C3xVkxUYmundffr
 github.com/rjman-ljm/go-substrate-crypto v1.0.0/go.mod h1:zo4Jpv1nRbszHeoXaZmJD2XPseMH+RDzDcBpMmilRgc=
 github.com/rjman-ljm/platdot-utils v1.5.1 h1:RUHJkxta47hMn5aTmoqoXrN1/NyChDoBLNYCB+qGVrA=
 github.com/rjman-ljm/platdot-utils v1.5.1/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
+github.com/rjman-ljm/platdot-utils v1.5.2 h1:ii6AD5G9pSim5GcGtZ9Tifeq4/rf1V3NJ0SB7GOUWec=
+github.com/rjman-ljm/platdot-utils v1.5.2/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
+github.com/rjman-ljm/platdot-utils v1.5.3 h1:+bxMiXa6GLnjw3tko83NtT0eiXBkt7lThDRX9l4K1UQ=
+github.com/rjman-ljm/platdot-utils v1.5.3/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
 github.com/rjman-ljm/substrate-go v1.6.1 h1:2pKvUGvt0UFO28kbdlosIzEsMwvCDYs2lnmBaMXKWwM=
 github.com/rjman-ljm/substrate-go v1.6.1/go.mod h1:FmdJ1p8TJhC/ie4r3rWNfYIolxNy7wRUOrEKe+BBmxw=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=

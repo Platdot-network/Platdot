@@ -1,6 +1,7 @@
 package ethlike
 
 import (
+	"github.com/Platdot-network/Platdot/config"
 	"github.com/rjman-ljm/platdot-utils/core"
 	"github.com/rjman-ljm/platdot-utils/keystore"
 	"github.com/rjman-ljm/platdot-utils/msg"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestChain_ListenerShutdownOnFailure(t *testing.T) {
-	client := ethtest.NewClient(t, TestEndpoint, AliceKp)
+	client := ethtest.NewClient(t, TestEndpoint[config.InitialEndPointId], AliceKp)
 	contracts := deployTestContracts(t, client, msg.ChainId(1))
 	cfg := &core.ChainConfig{
 		Id:             msg.ChainId(1),
@@ -57,7 +58,7 @@ func TestChain_ListenerShutdownOnFailure(t *testing.T) {
 
 func TestChain_WriterShutdownOnFailure(t *testing.T) {
 	// Setup contracts and params for erc20 transfer
-	client := ethtest.NewClient(t, TestEndpoint, AliceKp)
+	client := ethtest.NewClient(t, TestEndpoint[config.InitialEndPointId], AliceKp)
 	contracts := deployTestContracts(t, client, msg.ChainId(1))
 	erc20Contract := ethtest.DeployMintApproveErc20(t, client, contracts.ERC20HandlerAddress, big.NewInt(100))
 	src := msg.ChainId(5) // Not yet used, nonce should be 0

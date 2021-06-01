@@ -369,13 +369,13 @@ func (w *writer) submitTx(c types.Call) {
 }
 
 func (w *writer) getRound() (Round, uint64) {
-	finalizedHash, err := w.listener.client.Api.RPC.Chain.GetFinalizedHead()
+	finalizedHash, err := w.listener.conn.cli.Api.RPC.Chain.GetFinalizedHead()
 	if err != nil {
 		w.listener.log.Error("Writer Failed to fetch finalized hash", "err", err)
 	}
 
 	// Get finalized block header
-	finalizedHeader, err := w.listener.client.Api.RPC.Chain.GetHeader(finalizedHash)
+	finalizedHeader, err := w.listener.conn.cli.Api.RPC.Chain.GetHeader(finalizedHash)
 	if err != nil {
 		w.listener.log.Error("Failed to fetch finalized header", "err", err)
 	}

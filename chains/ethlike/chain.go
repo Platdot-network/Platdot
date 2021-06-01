@@ -25,6 +25,7 @@ import (
 	bridge "github.com/Platdot-network/Platdot/bindings/Bridge"
 	erc20Handler "github.com/Platdot-network/Platdot/bindings/ERC20Handler"
 	"github.com/Platdot-network/Platdot/chains/chainset"
+	"github.com/Platdot-network/Platdot/config"
 	connection "github.com/Platdot-network/Platdot/connections/ethlike"
 	"github.com/hacpy/go-ethereum/accounts/abi/bind"
 	"github.com/hacpy/go-ethereum/common"
@@ -44,7 +45,9 @@ var _ core.Chain = &Chain{}
 var _ Connection = &connection.Connection{}
 
 type Connection interface {
+	GetEndPoint() string
 	Connect() error
+	Reconnect(endpoint string) error
 	Keypair() *secp256k1.Keypair
 	Opts() *bind.TransactOpts
 	CallOpts() *bind.CallOpts
@@ -95,7 +98,6 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 	if err != nil {
 		return nil, err
 	}
-
 	kp, _ := kpI.(*secp256k1.Keypair)
 
 	// init block store
@@ -105,7 +107,7 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 	}
 
 	stop := make(chan int)
-	conn := connection.NewConnection(networkId, cfg.endpoint, cfg.http, kp, logger, cfg.gasLimit, cfg.maxGasPrice, cfg.gasMultiplier)
+	conn := connection.NewConnection(networkId, cfg.endpoint[config.InitialEndPointId], cfg.http, kp, logger, cfg.gasLimit, cfg.maxGasPrice, cfg.gasMultiplier)
 	err = conn.Connect()
 	if err != nil {
 		return nil, err

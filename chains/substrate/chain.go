@@ -25,15 +25,15 @@ As the writer receives messages from the router, it constructs proposals. If a p
 
 import (
 	"github.com/ChainSafe/log15"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/signature"
 	"github.com/Platdot-network/Platdot/chains/chainset"
+	"github.com/Platdot-network/Platdot/config"
+	"github.com/centrifuge/go-substrate-rpc-client/v3/signature"
 	"github.com/rjman-ljm/platdot-utils/blockstore"
 	"github.com/rjman-ljm/platdot-utils/core"
 	"github.com/rjman-ljm/platdot-utils/crypto/sr25519"
 	"github.com/rjman-ljm/platdot-utils/keystore"
 	metrics "github.com/rjman-ljm/platdot-utils/metrics/types"
 	"github.com/rjman-ljm/platdot-utils/msg"
-	"github.com/rjman-ljm/substrate-go/client"
 )
 
 var _ core.Chain = &Chain{}
@@ -62,6 +62,7 @@ func checkBlockstore(bs *blockstore.Blockstore, startBlock uint64) (uint64, erro
 }
 
 func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics) (*Chain, error) {
+	stop := make(chan int)
 	/// Load keypair
 	kp, err := keystore.KeypairFromAddress(cfg.From, keystore.SubChain, cfg.KeystorePath, cfg.Insecure)
 	if err != nil {
@@ -80,11 +81,8 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	endBlock := parseEndBlock(cfg)
 	lostAddress := parseLostAddress(cfg)
 
-	stop := make(chan int)
-
 	/// Setup connection
-	conn := NewConnection(cfg.Endpoint, cfg.Name, (*signature.KeyringPair)(krp), logger, stop, sysErr)
-
+	conn := NewConnection(cfg.Endpoint[config.InitialEndPointId], cfg.Endpoint, cfg.Name, (*signature.KeyringPair)(krp), logger, stop, sysErr)
 	err = conn.Connect()
 	if err != nil {
 		return nil, err
@@ -108,29 +106,21 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	multiSignAddress := parseMultiSignAddress(cfg)
 	total, currentRelayer, threshold := parseMultiSignConfig(cfg)
 	weight := parseMaxWeight(cfg)
-	url := parseUrl(cfg)
 	dest := parseDestId(cfg)
 	resource := parseResourceId(cfg)
-
-	/// Initialize client
-	cli, err := client.New(url)
-	if err != nil {
-		panic(err)
-	}
-
-	bc := chainset.NewBridgeCore(cfg.Name)
-	bc.InitializeClientPrefix(cli)
 
 	//log15.Info("Initialize ChainInfo", "Prefix", cli.Prefix, "Name", cli.Name, "Id", cfg.Id)
 	//fmt.Printf("chain: %v\n", bc.ChainInfo)
 
-
 	/// Set relayer parameters
-	relayer := NewRelayer((signature.KeyringPair)(*krp), otherRelayers, total, threshold, currentRelayer)
+	relayer := NewRelayer(*krp, otherRelayers, total, threshold, currentRelayer)
+
+	bc := chainset.NewBridgeCore(cfg.Name)
+	bc.InitializeClientPrefix(conn.cli)
 
 	/// Setup listener & writer
 	l := NewListener(conn, cfg.Name, cfg.Id, startBlock, endBlock, lostAddress,
-		logger, bs, stop, sysErr, m, multiSignAddress, cli, resource, dest, relayer, bc)
+		logger, bs, stop, sysErr, m, multiSignAddress, resource, dest, relayer, bc)
 	w := NewWriter(conn, l, logger, sysErr, m, useExtended, weight, relayer, bc)
 
 	return &Chain{
