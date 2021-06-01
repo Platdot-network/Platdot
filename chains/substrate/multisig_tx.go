@@ -15,17 +15,17 @@ import (
 
 const HexPrefix = "hex"
 
-type MultiSignTxId uint64
+type multiSigTxId uint64
 type BlockNumber int64
 type OtherSignatories []string
 
-type MultiSignTx struct {
+type multiSigTx struct {
 	Block BlockNumber
-	TxId  MultiSignTxId
+	TxId  multiSigTxId
 }
 
 type MultiSigAsMulti struct {
-	OriginMsTx     		MultiSignTx
+	OriginMsTx     		multiSigTx
 	Executed       		bool
 	Threshold      		uint16
 	Others         		[]OtherSignatories
@@ -46,7 +46,7 @@ func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
 
 		// Current Extrinsic { Block, Index }
 		l.curTx.Block = BlockNumber(currentBlock)
-		l.curTx.TxId = MultiSignTxId(e.ExtrinsicIndex)
+		l.curTx.TxId = multiSigTxId(e.ExtrinsicIndex)
 		msTx := MultiSigAsMulti{
 			DestAddress: e.MultiSigAsMulti.DestAddress,
 			DestAmount:  e.MultiSigAsMulti.DestAmount,
@@ -56,7 +56,7 @@ func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
 
 		if e.Type == base.AsMultiNew && fromAddressValid {
 			//l.logInfo(FindNewMultiSigTx, currentBlock)
-			/// Make a new MultiSignTransfer record
+			/// Make a new multiSigTransfer record
 			l.makeNewMultiSigRecord(e)
 		}
 

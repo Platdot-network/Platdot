@@ -17,17 +17,17 @@ import (
 
 const (
 
-	FindNewMultiSigTx 						string = "Find a MultiSign New extrinsic"
-	FindApproveMultiSigTx 					string = "Find a MultiSign Approve extrinsic"
-	FindExecutedMultiSigTx 					string = "Find a MultiSign Executed extrinsic"
-	FindBatchMultiSigTx 					string = "Find a MultiSign Batch Extrinsic"
+	FindNewMultiSigTx 						string = "Find a multiSig New extrinsic"
+	FindApproveMultiSigTx 					string = "Find a multiSig Approve extrinsic"
+	FindExecutedMultiSigTx 					string = "Find a multiSig Executed extrinsic"
+	FindBatchMultiSigTx 					string = "Find a multiSig Batch Extrinsic"
 	FindFailedBatchMultiSigTx 				string = "But Batch Extrinsic Failed"
 
 	StartATx 								string = "Start a redeemTx..."
 	MeetARepeatTx 							string = "Meet a Repeat Transaction"
 	FindLostMultiSigTx 						string = "Find a Lost BatchTx"
-	TryToMakeNewMultiSigTx 					string = "Try to make a New MultiSign Tx!"
-	TryToApproveMultiSigTx 					string = "Try to Approve a MultiSignTx!"
+	TryToMakeNewMultiSigTx 					string = "Try to make a New multiSig Tx!"
+	TryToApproveMultiSigTx 					string = "Try to Approve a multiSigTx!"
 	FinishARedeemTx 						string = "Finish a redeemTx"
 	MultiSigExtrinsicExecuted 				string = "MultiSig extrinsic executed!"
 	BlockNotYetFinalized 					string = "Block not yet finalized"
@@ -47,7 +47,7 @@ const (
 	NewCrossChainTransferCallError          string = "New Cross-Chain Transfer err"
 	NewMultiCallError                     	string = "New MultiCall err"
 	NewApiError                           	string = "New api error"
-	SignMultiSignTxFailed                 	string = "Sign MultiSignTx failed"
+	SignmultiSigTxFailed                 	string = "Sign multiSigTx failed"
 	SubmitExtrinsicFailed                 	string = "Submit Extrinsic Failed"
 	GetMetadataError                      	string = "Get Metadata Latest err"
 	GetBlockHashError                     	string = "Get BlockHash Latest err"
@@ -58,17 +58,17 @@ const (
 	ProcessBlockError                     	string = "ProcessBlock err, check it"
 )
 
-var UnKnownError = MultiSignTx{
+var UnKnownError = multiSigTx{
 	Block: -2,
 	TxId:  0,
 }
 
-var NotExecuted = MultiSignTx{
+var NotExecuted = multiSigTx{
 	Block: -1,
 	TxId:  0,
 }
 
-var YesVoted = MultiSignTx{
+var YesVoted = multiSigTx{
 	Block: -1,
 	TxId:  1,
 }
@@ -171,7 +171,7 @@ func (w *writer) processMessage(m msg.Message) {
 	w.messages[destMessage] = true
 }
 
-func (w *writer) deleteMessage(m msg.Message, currentTx MultiSignTx) {
+func (w *writer) deleteMessage(m msg.Message, currentTx multiSigTx) {
 	var mutex sync.Mutex
 	mutex.Lock()
 

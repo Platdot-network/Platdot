@@ -37,8 +37,8 @@ type listener struct {
 	latestBlock   metrics.LatestBlock
 	metrics       *metrics.ChainMetrics
 	multiSigAddr  types.AccountID
-	curTx         MultiSignTx
-	asMulti       map[MultiSignTx]MultiSigAsMulti
+	curTx         multiSigTx
+	asMulti       map[multiSigTx]MultiSigAsMulti
 	resourceId    msg.ResourceId
 	destId        msg.ChainId
 	relayer       Relayer
@@ -57,7 +57,7 @@ var RedeemRetryLimit = 15
 func NewListener(
 	conn *Connection, name string, id msg.ChainId, startBlock uint64, endBlock uint64, lostAddress string,
 	log log15.Logger, bs blockstore.Blockstorer, stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics,
-	multiSignAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.BridgeCore) *listener {
+	multiSigAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.BridgeCore) *listener {
 	return &listener{
 		name:          	name,
 		chainId:       	id,
@@ -72,8 +72,8 @@ func NewListener(
 		sysErr:        sysErr,
 		latestBlock:   metrics.LatestBlock{LastUpdated: time.Now()},
 		metrics:       m,
-		multiSigAddr:  multiSignAddress,
-		asMulti:       make(map[MultiSignTx]MultiSigAsMulti, InitCapacity),
+		multiSigAddr:  multiSigAddress,
+		asMulti:       make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
 		resourceId:    resource,
 		destId:        dest,
 		relayer:       relayer,

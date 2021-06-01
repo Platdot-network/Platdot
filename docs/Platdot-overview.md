@@ -51,7 +51,7 @@ ChainA的代币流通到ChainB：
 Platdot适用条件
 
 + 在EVM上部署具有多签模块的chainbridge-solidity智能合约
-+ 基于Substrate开发的、具有`multisign pallet`的链，如Polkadot / Kusama / Westend
++ 基于Substrate开发的、具有`multiSig pallet`的链，如Polkadot / Kusama / Westend
 
 ![Platdot](https://cdn.jsdelivr.net/gh/rjman-self/resources/assets/Platdot.jpg)
 

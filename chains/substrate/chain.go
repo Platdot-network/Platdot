@@ -24,10 +24,13 @@ As the writer receives messages from the router, it constructs proposals. If a p
 */
 
 import (
+	"fmt"
 	"github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/Platdot-network/Platdot/config"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/signature"
+	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/blockstore"
 	"github.com/rjman-ljm/platdot-utils/core"
 	"github.com/rjman-ljm/platdot-utils/crypto/sr25519"
@@ -64,8 +67,10 @@ func checkBlockstore(bs *blockstore.Blockstore, startBlock uint64) (uint64, erro
 func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics) (*Chain, error) {
 	stop := make(chan int)
 	/// Load keypair
-	kp, err := keystore.KeypairFromAddress(cfg.From, keystore.SubChain, cfg.KeystorePath, cfg.Insecure)
+	fromPubKey, _ := ss58.DecodeToPub(cfg.From)
+	kp, err := keystore.KeypairFromAddress(types.HexEncodeToString(fromPubKey), keystore.SubChain, cfg.KeystorePath, cfg.Insecure)
 	if err != nil {
+		fmt.Printf("keystore not found, addr is %v\n", cfg)
 		return nil, err
 	}
 
@@ -102,9 +107,9 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 
 	/// Load configuration required by listener and writer
 	useExtended := parseUseExtended(cfg)
-	otherRelayers := parseOtherRelayer(cfg)
-	multiSignAddress := parseMultiSignAddress(cfg)
-	total, currentRelayer, threshold := parseMultiSignConfig(cfg)
+	otherRelayers := parseOtherRelayers(cfg)
+	multiSigAddress := parsemultiSigAddress(cfg)
+	total, currentRelayer, threshold := parsemultiSigConfig(cfg)
 	weight := parseMaxWeight(cfg)
 	dest := parseDestId(cfg)
 	resource := parseResourceId(cfg)
@@ -120,7 +125,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 
 	/// Setup listener & writer
 	l := NewListener(conn, cfg.Name, cfg.Id, startBlock, endBlock, lostAddress,
-		logger, bs, stop, sysErr, m, multiSignAddress, resource, dest, relayer, bc)
+		logger, bs, stop, sysErr, m, multiSigAddress, resource, dest, relayer, bc)
 	w := NewWriter(conn, l, logger, sysErr, m, useExtended, weight, relayer, bc)
 
 	return &Chain{

@@ -95,10 +95,10 @@ cd Platdot && make build
       "endpoint": "connect-your-node",
       "from": "5CHwt8bFyDLC3MyzPQugmmxZTGjShBW2kFMWiC2kSL5TuJxd",
       "opts": {
-        "MultiSignAddress": "0x83b0e4664507e7072dd2b30e9c5f68a708979e741a965048fb1ccbc61bd331f5",
+        "multiSigAddress": "0x83b0e4664507e7072dd2b30e9c5f68a708979e741a965048fb1ccbc61bd331f5",
         "TotalRelayer": "5",
         "CurrentRelayerNumber": "1",
-        "MultiSignThreshold": "3",
+        "multiSigThreshold": "3",
         "OtherRelayer1": "0x50a80eb26a7fb43ff4f84ead705fc61c1d4074112e53f781a6b03c0c7504f663",
         "OtherRelayer2": "0x923eeef27b93315c97e63e0c1284b7433ffbc413a58da0626a63955a48586075",
         "OtherRelayer3": "0xa45a0ddd81da79f65cbcfeefc8e62382b1f56ccbbdd9533f77cdc49172cca33d",
@@ -171,7 +171,7 @@ From地址为需要连接的见证人账户地址
 
 
 
-如图所示，最上方即为多签地址，`MultiSignAddress`填入如下地址：
+如图所示，最上方即为多签地址，`multiSigAddress`填入如下地址：
 
 > 此处地址需要填写公钥
 
@@ -179,11 +179,11 @@ From地址为需要连接的见证人账户地址
 {
 	"name": "kusama",
     "...": "...",
-	"MultiSignAddress": "multisig-address-public-key",
+	"multiSigAddress": "multisig-address-public-key",
 }
 ```
 
-`TotalRelayer` 和`MultiSignThreshold` 分别是见证人的数量和多签交易完成的阈值，`CurrentRelayerNumber`是设定的见证人次序。如上图所示，如果你是见证人Bob,那么可以设定``TotalRelayer` = 5，`MultiSignThreshold` = 3，`CurrentRelayerNumber` is 2.
+`TotalRelayer` 和`multiSigThreshold` 分别是见证人的数量和多签交易完成的阈值，`CurrentRelayerNumber`是设定的见证人次序。如上图所示，如果你是见证人Bob,那么可以设定``TotalRelayer` = 5，`multiSigThreshold` = 3，`CurrentRelayerNumber` is 2.
 
 ```json
 {
@@ -191,7 +191,7 @@ From地址为需要连接的见证人账户地址
     "...": "...",
     "TotalRelayer": "5",
     "CurrentRelayerNumber": "2",
-    "MultiSignThreshold": "3",
+    "multiSigThreshold": "3",
 }
 ```
 

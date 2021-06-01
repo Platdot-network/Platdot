@@ -150,7 +150,7 @@ func (w *writer) checkRepeat(m msg.Message) bool {
 	return true
 }
 
-func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
+func (w *writer) redeemTx(message *Msg) (bool, multiSigTx) {
 	//w.UpdateMetadata()
 	m := message.m
 	types.SetSerDeOptions(types.SerDeOptions{NoPalletIndices: true})
@@ -160,7 +160,7 @@ func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
 		time.Sleep(RoundInterval)
 	}()
 
-	/// BEGIN: Create a call of MultiSignTransfer
+	/// BEGIN: Create a call of multiSigTransfer
 	c, actualAmount, ok, isFinish, currentTx := w.getCall(m)
 	if !ok {
 		return isFinish, currentTx
@@ -172,7 +172,7 @@ func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
 		blockRound := round.blockRound.Uint64()
 		if blockRound == processRound && !message.ok {
 			fmt.Printf("Relayer#%v solve %v in block#%v\n", w.relayer.currentRelayer, round, height)
-			// Try to find a exist MultiSignTx
+			// Try to find a exist multiSigTx
 			var maybeTimePoint interface{}
 			maxWeight := types.Weight(0)
 
@@ -188,7 +188,7 @@ func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
 				}
 
 				if ms.DestAddress == destAddress && ms.DestAmount == actualAmount.String() {
-					/// Once MultiSign Extrinsic is executed, stop sending Extrinsic to Polkadot
+					/// Once multiSig Extrinsic is executed, stop sending Extrinsic to Polkadot
 					finished, executed := w.isFinish(ms, m)
 					if finished {
 						return finished, executed
@@ -218,7 +218,7 @@ func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
 				w.log.Info(TryToApproveMultiSigTx, "Block", height, "Index", maybeTimePoint.(TimePointSafe32).Index, "depositNonce", m.DepositNonce)
 			}
 
-			mc, err := types.NewCall(&w.conn.meta, string(utils.MultisigAsMulti), w.relayer.multiSignThreshold, w.relayer.otherSignatories, maybeTimePoint, EncodeCall(c), false, maxWeight)
+			mc, err := types.NewCall(&w.conn.meta, string(utils.MultisigAsMulti), w.relayer.multiSigThreshold, w.relayer.otherSignatories, maybeTimePoint, EncodeCall(c), false, maxWeight)
 			if err != nil {
 				w.logErr(NewMultiCallError, err)
 			}
@@ -237,7 +237,7 @@ func (w *writer) redeemTx(message *Msg) (bool, MultiSignTx) {
 	}
 }
 
-func (w *writer) getCall(m msg.Message) (types.Call, *big.Int, bool, bool, MultiSignTx){
+func (w *writer) getCall(m msg.Message) (types.Call, *big.Int, bool, bool, multiSigTx){
 	var c types.Call
 	var assetId xevents.AssetId
 
@@ -265,7 +265,7 @@ func (w *writer) getCall(m msg.Message) (types.Call, *big.Int, bool, bool, Multi
 	return c, sendAmount, true, false, NotExecuted
 }
 
-func (w *writer) checkRedeem(m msg.Message, actualAmount *big.Int) (bool, MultiSignTx) {
+func (w *writer) checkRedeem(m msg.Message, actualAmount *big.Int) (bool, multiSigTx) {
 	for _, ms := range w.listener.asMulti {
 		// Validate parameter
 		var destAddress string
@@ -277,7 +277,7 @@ func (w *writer) checkRedeem(m msg.Message, actualAmount *big.Int) (bool, MultiS
 		}
 
 		if ms.DestAddress == destAddress && ms.DestAmount == actualAmount.String() {
-			/// Once MultiSign Extrinsic is executed, stop sending Extrinsic to Polkadot
+			/// Once multiSig Extrinsic is executed, stop sending Extrinsic to Polkadot
 			return w.isFinish(ms, m)
 		}
 	}
@@ -347,7 +347,7 @@ func (w *writer) submitTx(c types.Call) {
 			TransactionVersion: rv.TransactionVersion,
 		}
 
-		// Create and Sign the MultiSign
+		// Create and Sign the multiSig
 		ext := types.NewExtrinsic(c)
 
 		/// ChainX V1 still use `Address` type
@@ -357,7 +357,7 @@ func (w *writer) submitTx(c types.Call) {
 			err = ext.Sign(w.relayer.kr, o)
 		}
 		if err != nil {
-			w.log.Error(SignMultiSignTxFailed, "Failed", err)
+			w.log.Error(SignmultiSigTxFailed, "Failed", err)
 			break
 		}
 
@@ -392,7 +392,7 @@ func (w *writer) getRound() (Round, uint64) {
 	return round, blockHeight.Uint64()
 }
 
-func (w *writer) isFinish(ms MultiSigAsMulti, m msg.Message) (bool, MultiSignTx) {
+func (w *writer) isFinish(ms MultiSigAsMulti, m msg.Message) (bool, multiSigTx) {
 	/// Check isExecuted
 	if ms.Executed {
 		return true, ms.OriginMsTx

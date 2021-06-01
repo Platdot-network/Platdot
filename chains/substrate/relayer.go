@@ -9,17 +9,17 @@ type Relayer struct {
 	kr                 signature.KeyringPair
 	otherSignatories   []types.AccountID
 	totalRelayers      uint64
-	multiSignThreshold uint16
+	multiSigThreshold uint16
 	currentRelayer     uint64
 }
 
 func NewRelayer(kr signature.KeyringPair, otherSignatories []types.AccountID, totalRelayers uint64,
-	multiSignThreshold uint16, currentRelayer uint64) Relayer {
+	multiSigThreshold uint16, currentRelayer uint64) Relayer {
 	return Relayer{
 		kr:                 kr,
 		otherSignatories:   otherSignatories,
 		totalRelayers:      totalRelayers,
-		multiSignThreshold: multiSignThreshold,
+		multiSigThreshold: multiSigThreshold,
 		currentRelayer:     currentRelayer,
 	}
 }

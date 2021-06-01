@@ -550,12 +550,8 @@ github.com/rjeczalik/notify v0.9.1 h1:CLCKso/QK1snAlnhNR/CNvNiFU2saUtjV0bx3EwNeC
 github.com/rjeczalik/notify v0.9.1/go.mod h1:rKwnCoCGeuQnwBtTSPL9Dad03Vh2n40ePRrjvIXnJho=
 github.com/rjman-ljm/go-substrate-crypto v1.0.0 h1:8nuZAfQT/erlu5C3xVkxUYmundffr856JPI9VTQbjN8=
 github.com/rjman-ljm/go-substrate-crypto v1.0.0/go.mod h1:zo4Jpv1nRbszHeoXaZmJD2XPseMH+RDzDcBpMmilRgc=
-github.com/rjman-ljm/platdot-utils v1.5.1 h1:RUHJkxta47hMn5aTmoqoXrN1/NyChDoBLNYCB+qGVrA=
-github.com/rjman-ljm/platdot-utils v1.5.1/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
-github.com/rjman-ljm/platdot-utils v1.5.2 h1:ii6AD5G9pSim5GcGtZ9Tifeq4/rf1V3NJ0SB7GOUWec=
-github.com/rjman-ljm/platdot-utils v1.5.2/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
-github.com/rjman-ljm/platdot-utils v1.5.3 h1:+bxMiXa6GLnjw3tko83NtT0eiXBkt7lThDRX9l4K1UQ=
-github.com/rjman-ljm/platdot-utils v1.5.3/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
+github.com/rjman-ljm/platdot-utils v1.5.4 h1:1QBuw+maLa1djz6mgIR5Y8sUnvwaW55n4EbW5PMZ49M=
+github.com/rjman-ljm/platdot-utils v1.5.4/go.mod h1:CEsFGD5cAVcvtRa5ChRlEhAtCXRGRfTZ7fa2vk1mD1I=
 github.com/rjman-ljm/substrate-go v1.6.1 h1:2pKvUGvt0UFO28kbdlosIzEsMwvCDYs2lnmBaMXKWwM=
 github.com/rjman-ljm/substrate-go v1.6.1/go.mod h1:FmdJ1p8TJhC/ie4r3rWNfYIolxNy7wRUOrEKe+BBmxw=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=
@@ -572,7 +568,6 @@ github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529/go.mod h1:DxrIzT+xaE7yg
 github.com/segmentio/kafka-go v0.1.0/go.mod h1:X6itGqS9L4jDletMsxZ7Dz+JFWxM6JHfPOCvTvk+EJo=
 github.com/segmentio/kafka-go v0.2.0/go.mod h1:X6itGqS9L4jDletMsxZ7Dz+JFWxM6JHfPOCvTvk+EJo=
 github.com/sergi/go-diff v1.0.0/go.mod h1:0CfEIISq7TuYL3j771MWULgwwjU+GofnZX9QAmXWZgo=
-github.com/shirou/gopsutil v2.20.5+incompatible h1:tYH07UPoQt0OCQdgWWMgYHy3/a9bcxNpBIysykNIP7I=
 github.com/shirou/gopsutil v2.20.5+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
 github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible h1:Bn1aCHHRnjv4Bl16T8rcaFjYSrGrIZvpiGO6P3Q4GpU=
 github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
@@ -674,7 +669,6 @@ golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899/go.mod h1:LzIPMQfyMNhhGPh
 golang.org/x/crypto v0.0.0-20200728195943-123391ffb6de/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/crypto v0.0.0-20200820211705-5c72a883971a/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad/go.mod h1:jdWPYTVW3xRLrWPugEBEK3UY2ZEsg3UU495nc5E+M+I=
-golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 h1:It14KIkyBFYkHkwZ7k45minvA9aorojkyjGk9KJ5B/w=
 golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2/go.mod h1:T9bdIzuCu7OtxOm1hfPfRQxPLYneinmdGuTeoZ9dtd4=
 golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a h1:kr2P4QFmQr29mSLA43kwrOcgcReGTfbE9N577tCTuBc=
 golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a/go.mod h1:P+XmwS30IXTQdn5tA2iutPOUgjI07+tq3H3K9MVA1s8=
@@ -750,7 +744,6 @@ golang.org/x/sync v0.0.0-20181221193216-37e7f081c4d4/go.mod h1:RxMgew5VJxzue5/jJ
 golang.org/x/sync v0.0.0-20190227155943-e225da77a7e6/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20190423024810-112230192c58/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
-golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a h1:WXEvlFVvvGxCJLG6REjsT03iWnKLEWinaScsxF2Vm2o=
 golang.org/x/sync v0.0.0-20200317015054-43a5402ce75a/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
