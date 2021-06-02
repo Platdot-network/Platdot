@@ -227,7 +227,7 @@ func importEthKey(filename, datadir string, password, newPassword []byte) (strin
 
 	kp := secp256k1.NewKeypair(*key.PrivateKey)
 
-	fp, err := filepath.Abs(keystorepath + "/" + kp.Address() + ".key")
+	fp, err := filepath.Abs(keystorepath + "/" + kp.PublicKey() + ".key")
 	if err != nil {
 		return "", fmt.Errorf("invalid filepath: %w", err)
 	}
@@ -253,7 +253,7 @@ func importEthKey(filename, datadir string, password, newPassword []byte) (strin
 		return "", fmt.Errorf("could not write key to file: %w", err)
 	}
 
-	log.Info("ETH key imported", "address", kp.Address(), "file", fp)
+	log.Info("ETH key imported", "addressPubKey", kp.PublicKey(), "file", fp)
 	return fp, nil
 
 }
