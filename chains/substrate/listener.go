@@ -39,8 +39,6 @@ type listener struct {
 	multiSigAddr types.AccountID
 	curTx        multiSigTx
 	asMulti      map[multiSigTx]MultiSigAsMulti
-	resourceId   msg.ResourceId
-	destId       msg.ChainId
 	relayer      Relayer
 	chainCore    *chainset.ChainCore
 }
@@ -57,7 +55,7 @@ var RedeemRetryLimit = 15
 func NewListener(
 	conn *Connection, name string, id msg.ChainId, startBlock uint64, endBlock uint64, lostAddress string,
 	log log15.Logger, bs blockstore.Blockstorer, stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics,
-	multiSigAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.ChainCore) *listener {
+	multiSigAddress types.AccountID, relayer Relayer, bc *chainset.ChainCore) *listener {
 	return &listener{
 		name:          	name,
 		chainId:       	id,
@@ -74,8 +72,6 @@ func NewListener(
 		metrics:      m,
 		multiSigAddr: multiSigAddress,
 		asMulti:      make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
-		resourceId:   resource,
-		destId:       dest,
 		relayer:      relayer,
 		chainCore:    bc,
 	}
@@ -388,7 +384,7 @@ func (l *listener) logReadyToSend(amount *big.Int, recipient []byte, e *models.E
 		return
 	}
 	sendMessage := "Ready to send " + currency.Name + "..."
-	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId, "To", l.destId)
-	l.log.Info(sendMessage, "Amount", amount, "FromId", l.chainId, "To", l.destId)
-	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId, "To", l.destId)
+	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId)
+	l.log.Info(sendMessage, "Amount", amount, "FromId", l.chainId)
+	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId)
 }

@@ -6,7 +6,6 @@ package ethlike
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/Platdot-network/Platdot/chains/substrate"
 	"github.com/hacpy/go-ethereum/common"
 	"math/big"
@@ -307,15 +306,6 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 				dataHash,
 			)
 			w.conn.UnlockOpts()
-
-			prop, err := w.bridgeContract.GetProposal(
-				w.conn.CallOpts(),
-				uint8(m.Source),
-				uint64(m.DepositNonce),
-				dataHash,
-			)
-
-			fmt.Printf("rId is %v\nprop is %v\n",m.ResourceId, prop)
 
 			if err == nil {
 				w.log.Info("Submitted proposal vote", "tx", tx.Hash(), "src", m.Source, "depositNonce", m.DepositNonce)

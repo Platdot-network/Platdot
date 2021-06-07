@@ -2,9 +2,10 @@ package substrate
 
 import (
 	"fmt"
-	"github.com/rjman-ljm/go-substrate-crypto/ss58"
+	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/hacpy/go-ethereum/common"
+	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/msg"
 	"github.com/rjman-ljm/substrate-go/expand"
 	"github.com/rjman-ljm/substrate-go/expand/base"
@@ -85,35 +86,64 @@ func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
 				continue
 			}
 
-			var recipient []byte
-			if e.Recipient[:3] == HexPrefix {
-				recipientAccount := types.NewAccountID(common.FromHex(e.Recipient[3:]))
-				recipient = recipientAccount[:]
-			} else {
-				recipient = []byte(e.Recipient)
+			destId, rId, recipient, err := l.parseRemark(e.Recipient)
+			if err != nil {
+				l.log.Error("parse remark error", "err", err)
+				continue
 			}
+			fmt.Printf("dest is %v, rId is %v, addresss is %v\n", destId, rId, recipient)
 
 			depositNonce, _ := strconv.ParseInt(strconv.FormatInt(currentBlock, 10)+strconv.FormatInt(int64(e.ExtrinsicIndex), 10), 10, 64)
 
-			//rId ,err := l.chainCore.AssetIdToResourceId(l.conn.api, &l.conn.meta, e.AssetId)
-			//if err != nil {
-			//	fmt.Println("parse AssetId err")
-			//	continue
-			//}
-			//fmt.Printf("ResourceId from %v is %v\n", rId, msg.ResourceIdFromSlice(rId))
-
 			m := msg.NewMultiSigTransfer(
 				l.chainId,
-				l.destId,
+				destId,
 				msg.Nonce(depositNonce),
 				sendAmount,
-				l.resourceId,
+				rId,
 				recipient[:],
 			)
 			l.logReadyToSend(sendAmount, recipient, e)
 			l.submitMessage(m, nil)
 		}
 	}
+}
+
+func (l *listener) parseRemark(res string) (msg.ChainId, msg.ResourceId, []byte, error) {
+	offset1 := -1
+	offset2 := -1
+	for i, v := range res {
+		if v == ',' && offset1 < 0 {
+			offset1 = i
+			continue
+		}
+		if v == ',' && offset1 > 0 {
+			offset2 = i
+			break
+		}
+	}
+	if offset1 < 0 || offset2 < 0 {
+		return msg.ChainId(0), msg.ResourceId{}, nil, fmt.Errorf("remark value err, didn't parse out destId, resourceId and address")
+	}
+
+	dest := res[:offset1]
+	rId := chainset.ResourceIdPrefix + res[offset1+1:offset2]
+	address := res[offset2+1:]
+
+	destId, err := strconv.ParseInt(dest, 10, 64)
+	if err != nil {
+		fmt.Printf("parse remark_destId to int err, value is %v\n", destId)
+		return msg.ChainId(0), msg.ResourceId{}, nil, fmt.Errorf("parse remark_destId to int err")
+	}
+
+	recipient := []byte(address)
+
+	if address[:3] == HexPrefix {
+		recipientAccount := types.NewAccountID(common.FromHex(address[3:]))
+		recipient = recipientAccount[:]
+	}
+
+	return msg.ChainId(destId), l.chainCore.ConvertStringToResourceId(rId) , recipient, nil
 }
 
 func (l *listener) findLostTxByAddress(currentBlock int64, e *models.ExtrinsicResponse) bool {
