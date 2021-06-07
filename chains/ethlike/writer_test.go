@@ -31,7 +31,7 @@ func createTestWriter(t *testing.T, cfg *Config, errs chan<- error) (*writer, fu
 	conn := newLocalConnection(t, cfg)
 	stop := make(chan int)
 
-	bc := chainset.NewBridgeCore(cfg.name)
+	bc := chainset.NewChainCore(cfg.name)
 
 	writer := NewWriter(conn, cfg, newTestLogger(cfg.name), *AliceKp, stop, errs, nil, bc)
 
@@ -113,7 +113,7 @@ func TestWriter_start_stop(t *testing.T) {
 
 	stop := make(chan int)
 
-	bc := chainset.NewBridgeCore(aliceTestConfig.name)
+	bc := chainset.NewChainCore(aliceTestConfig.name)
 	writer := NewWriter(conn, aliceTestConfig, TestLogger, *AliceKp, stop, nil, nil, bc)
 
 	err := writer.start()

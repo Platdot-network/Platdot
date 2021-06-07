@@ -120,7 +120,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	/// Set relayer parameters
 	relayer := NewRelayer(*krp, otherRelayers, total, threshold, currentRelayer)
 
-	bc := chainset.NewBridgeCore(cfg.Name)
+	bc := chainset.NewChainCore(cfg.Name)
 	bc.InitializeClientPrefix(conn.cli)
 
 	/// Setup listener & writer

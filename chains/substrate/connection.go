@@ -101,7 +101,7 @@ func (c *Connection) Connect() error {
 		return err
 	}
 	c.cli = cli
-	bc := chainset.NewBridgeCore(c.name)
+	bc := chainset.NewChainCore(c.name)
 	bc.InitializeClientPrefix(cli)
 
 	// Fetch metadata

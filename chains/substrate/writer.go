@@ -38,11 +38,11 @@ type writer struct {
 	relayer    Relayer
 	maxWeight  uint64
 	messages   map[Dest]bool
-	bridgeCore *chainset.BridgeCore
+	chainCore  *chainset.ChainCore
 }
 
 func NewWriter(conn *Connection, listener *listener, log log15.Logger, sysErr chan<- error,
-	m *metrics.ChainMetrics, extendCall bool, weight uint64, relayer Relayer, bc *chainset.BridgeCore) *writer {
+	m *metrics.ChainMetrics, extendCall bool, weight uint64, relayer Relayer, bc *chainset.ChainCore) *writer {
 
 	return &writer{
 		conn:       conn,
@@ -54,7 +54,7 @@ func NewWriter(conn *Connection, listener *listener, log log15.Logger, sysErr ch
 		relayer:    relayer,
 		maxWeight:  weight,
 		messages:   make(map[Dest]bool, InitCapacity),
-		bridgeCore: bc,
+		chainCore:  bc,
 	}
 }
 
@@ -106,7 +106,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 				continue
 			}
 
-			assetId , err := w.bridgeCore.ConvertResourceIdToAssetId(msg.ResourceId(prop.resourceId))
+			assetId , err := w.chainCore.ConvertResourceIdToAssetId(msg.ResourceId(prop.resourceId))
 			if err != nil {
 				w.logErr("rId to assetId err", err)
 			}
@@ -249,15 +249,15 @@ func (w *writer) getCall(m msg.Message) (types.Call, *big.Int, bool, bool, multi
 
 	/// Get SendAmount
 	originAmount := big.NewInt(0).SetBytes(m.Payload[0].([]byte))
-	sendAmount, err := w.bridgeCore.GetAmountToSub(m.Payload[0].([]byte), assetId)
+	sendAmount, err := w.chainCore.GetAmountToSub(m.Payload[0].([]byte), assetId)
 	if err != nil {
 		w.log.Error(RedeemNegAmountError, "Error", err)
 		return types.Call{}, nil, false, true, UnKnownError
 	}
 
-	w.log.Info("Send Token to "  + w.bridgeCore.ChainName, "OriginAmount", originAmount, "SendAmount", sendAmount)
+	w.log.Info("Send Token to "  + w.chainCore.ChainName, "OriginAmount", originAmount, "SendAmount", sendAmount)
 
-	c, err = w.bridgeCore.MakeCrossChainTansferCall(m, &w.conn.meta, assetId)
+	c, err = w.chainCore.MakeCrossChainTansferCall(m, &w.conn.meta, assetId)
 	if err != nil {
 		w.log.Error(NewCrossChainTransferCallError, "Error", err)
 		return types.Call{}, nil, false, true, UnKnownError

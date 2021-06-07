@@ -86,7 +86,7 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 		return nil, err
 	}
 
-	bc := chainset.NewBridgeCore(cfg.name)
+	bc := chainset.NewChainCore(cfg.name)
 
 	// set chainId
 	networkId, _ := strconv.ParseUint(cfg.networkId, 0, 64)

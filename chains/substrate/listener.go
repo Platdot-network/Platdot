@@ -32,17 +32,17 @@ type listener struct {
 	subscriptions map[eventName]eventHandler // Handlers for specific events
 	router        chains.Router
 	log           log15.Logger
-	stop          <-chan int
-	sysErr        chan<- error
-	latestBlock   metrics.LatestBlock
-	metrics       *metrics.ChainMetrics
-	multiSigAddr  types.AccountID
-	curTx         multiSigTx
-	asMulti       map[multiSigTx]MultiSigAsMulti
-	resourceId    msg.ResourceId
-	destId        msg.ChainId
-	relayer       Relayer
-	bridgeCore    *chainset.BridgeCore
+	stop         <-chan int
+	sysErr       chan<- error
+	latestBlock  metrics.LatestBlock
+	metrics      *metrics.ChainMetrics
+	multiSigAddr types.AccountID
+	curTx        multiSigTx
+	asMulti      map[multiSigTx]MultiSigAsMulti
+	resourceId   msg.ResourceId
+	destId       msg.ChainId
+	relayer      Relayer
+	chainCore    *chainset.ChainCore
 }
 
 var ErrBlockNotReady = errors.New("required result to be 32 bytes, but got 0")
@@ -57,7 +57,7 @@ var RedeemRetryLimit = 15
 func NewListener(
 	conn *Connection, name string, id msg.ChainId, startBlock uint64, endBlock uint64, lostAddress string,
 	log log15.Logger, bs blockstore.Blockstorer, stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics,
-	multiSigAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.BridgeCore) *listener {
+	multiSigAddress types.AccountID, resource msg.ResourceId, dest msg.ChainId, relayer Relayer, bc *chainset.ChainCore) *listener {
 	return &listener{
 		name:          	name,
 		chainId:       	id,
@@ -67,17 +67,17 @@ func NewListener(
 		blockStore:    bs,
 		conn:          conn,
 		subscriptions: make(map[eventName]eventHandler),
-		log:           log,
-		stop:          stop,
-		sysErr:        sysErr,
-		latestBlock:   metrics.LatestBlock{LastUpdated: time.Now()},
-		metrics:       m,
-		multiSigAddr:  multiSigAddress,
-		asMulti:       make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
-		resourceId:    resource,
-		destId:        dest,
-		relayer:       relayer,
-		bridgeCore:    bc,
+		log:          log,
+		stop:         stop,
+		sysErr:       sysErr,
+		latestBlock:  metrics.LatestBlock{LastUpdated: time.Now()},
+		metrics:      m,
+		multiSigAddr: multiSigAddress,
+		asMulti:      make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
+		resourceId:   resource,
+		destId:       dest,
+		relayer:      relayer,
+		chainCore:    bc,
 	}
 }
 
@@ -382,7 +382,7 @@ func (l *listener) logCrossChainTx (tokenX string, tokenY string, amount *big.In
 }
 
 func (l *listener) logReadyToSend(amount *big.Int, recipient []byte, e *models.ExtrinsicResponse) {
-	currency, err := l.bridgeCore.GetCurrencyByAssetId(e.AssetId)
+	currency, err := l.chainCore.GetCurrencyByAssetId(e.AssetId)
 	if err != nil {
 		fmt.Printf("unimplemented currency")
 		return

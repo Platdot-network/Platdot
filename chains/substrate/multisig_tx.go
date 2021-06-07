@@ -95,7 +95,7 @@ func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
 
 			depositNonce, _ := strconv.ParseInt(strconv.FormatInt(currentBlock, 10)+strconv.FormatInt(int64(e.ExtrinsicIndex), 10), 10, 64)
 
-			//rId ,err := l.bridgeCore.AssetIdToResourceId(l.conn.api, &l.conn.meta, e.AssetId)
+			//rId ,err := l.chainCore.AssetIdToResourceId(l.conn.api, &l.conn.meta, e.AssetId)
 			//if err != nil {
 			//	fmt.Println("parse AssetId err")
 			//	continue
@@ -139,7 +139,7 @@ func (l *listener) getSendAmount(e *models.ExtrinsicResponse) (*big.Int, bool) {
 		return nil, false
 	}
 
-	sendAmount, err := l.bridgeCore.GetAmountToEth(amount.Bytes(), e.AssetId)
+	sendAmount, err := l.chainCore.GetAmountToEth(amount.Bytes(), e.AssetId)
 	if err != nil {
 		return nil, false
 	}

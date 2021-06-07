@@ -246,17 +246,17 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 }
 
 func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
-	assetId, err := w.bridgeCore.ConvertResourceIdToAssetId(m.ResourceId)
+	assetId, err := w.chainCore.ConvertResourceIdToAssetId(m.ResourceId)
 	if err != nil {
 		return nil, err
 	}
 
-	sendAmount, err := w.bridgeCore.GetAmountToSub(m.Payload[0].([]byte), assetId)
+	sendAmount, err := w.chainCore.GetAmountToSub(m.Payload[0].([]byte), assetId)
 	if err != nil {
 		return nil, fmt.Errorf("create fungible proposal error, neg amount")
 	}
 
-	recipient := w.bridgeCore.GetSubChainRecipient(m)
+	recipient := w.chainCore.GetSubChainRecipient(m)
 	depositNonce := types.U64(m.DepositNonce)
 
 	err = w.conn.updateMetatdata()
@@ -299,7 +299,7 @@ func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
 
 func (w *writer) createNonFungibleProposal(m msg.Message) (*proposal, error) {
 	tokenId := types.NewU256(*big.NewInt(0).SetBytes(m.Payload[0].([]byte)))
-	recipient := w.bridgeCore.GetSubChainRecipient(m)
+	recipient := w.chainCore.GetSubChainRecipient(m)
 	metadata := types.Bytes(m.Payload[2].([]byte))
 	depositNonce := types.U64(m.DepositNonce)
 
