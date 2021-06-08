@@ -6,17 +6,29 @@ package substrate
 import (
 	"bytes"
 	"fmt"
+	utils "github.com/Platdot-network/Platdot/shared/substrate"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/scale"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
-	utils "github.com/Platdot-network/Platdot/shared/substrate"
 	"github.com/rjman-ljm/platdot-utils/msg"
 	"math/big"
 	"sync"
 	"time"
 )
 
-const (
+type RedeemStatusCode int
 
+const (
+	IsExecuted      RedeemStatusCode = iota
+	NotExecuted
+	YesVoted
+	UnKnownError
+)
+
+func (code RedeemStatusCode)finished() bool {
+	return code == YesVoted || code == IsExecuted || code == UnKnownError
+}
+
+const (
 	FindNewMultiSigTx 						string = "Find a multiSig New extrinsic"
 	FindApproveMultiSigTx 					string = "Find a multiSig Approve extrinsic"
 	FindExecutedMultiSigTx 					string = "Find a multiSig Executed extrinsic"
@@ -58,20 +70,20 @@ const (
 	ProcessBlockError                     	string = "ProcessBlock err, check it"
 )
 
-var UnKnownError = multiSigTx{
-	Block: -2,
-	TxId:  0,
-}
+//var UnKnownError = multiSigTx{
+//	Block: -2,
+//	TxId:  0,
+//}
 
-var NotExecuted = multiSigTx{
-	Block: -1,
-	TxId:  0,
-}
+//var NotExecuted = multiSigTx{
+//	Block: -1,
+//	TxId:  0,
+//}
 
-var YesVoted = multiSigTx{
-	Block: -1,
-	TxId:  1,
-}
+//var YesVoted = multiSigTx{
+//	Block: -1,
+//	TxId:  1,
+//}
 
 type TimePointSafe32 struct {
 	Height types.OptionU32
@@ -83,13 +95,13 @@ type Round struct {
 	blockRound  *big.Int
 }
 
-type Msg struct {
+type MsgStatus struct {
 	m 	msg.Message
 	ok 	bool
 }
 
-func NewMsg(msg msg.Message) *Msg {
-	return &Msg{
+func NewMsgStatus(msg msg.Message) *MsgStatus {
+	return &MsgStatus{
 		m: msg,
 		ok: false,
 	}
@@ -207,7 +219,7 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 			w.log.Info(LineLog, "DepositNonce", m.DepositNonce)
 		}()
 		retryTimes := RedeemRetryLimit
-		message := NewMsg(m)
+		message := NewMsgStatus(m)
 
 		for {
 			retryTimes--
@@ -219,26 +231,27 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 				w.logErr(RedeemTxTryTooManyTimes, nil)
 				break
 			}
-			isFinished, currentTx := w.redeemTx(message)
-			if isFinished {
-				/// If curTx is UnKnownError
-				if currentTx == UnKnownError {
-					w.log.Error(MultiSigExtrinsicError, "DepositNonce", m.DepositNonce)
-					w.deleteMessage(m, currentTx)
-					break
-				}
 
-				/// If curTx is voted
-				if currentTx == YesVoted {
-					message.ok = true
-					time.Sleep(RoundInterval * time.Duration(w.relayer.totalRelayers) / 2)
-				}
-				/// Executed or UnKnownError
-				if currentTx != YesVoted && currentTx != NotExecuted && currentTx != UnKnownError {
-					w.log.Info(MultiSigExtrinsicExecuted, "DepositNonce", m.DepositNonce, "OriginBlock", currentTx.Block)
-					w.deleteMessage(m, currentTx)
-					break
-				}
+			redeemStatus, currentTx := w.redeemTx(message)
+
+			/// If curTx is UnKnownError
+			if redeemStatus == UnKnownError {
+				w.log.Error(MultiSigExtrinsicError, "DepositNonce", m.DepositNonce)
+				w.deleteMessage(m, currentTx)
+				break
+			}
+
+			/// If curTx is voted
+			if redeemStatus == YesVoted {
+				message.ok = true
+				time.Sleep(RoundInterval * time.Duration(w.relayer.totalRelayers) / 2)
+				continue
+			}
+			/// Executed or UnKnownError
+			if redeemStatus == IsExecuted {
+				w.log.Info(MultiSigExtrinsicExecuted, "DepositNonce", m.DepositNonce, "OriginBlock", currentTx.Block)
+				w.deleteMessage(m, currentTx)
+				break
 			}
 		}
 		w.log.Info(FinishARedeemTx, "DepositNonce", m.DepositNonce)

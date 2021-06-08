@@ -113,7 +113,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	weight := parseMaxWeight(cfg)
 
 	/// Set relayer parameters
-	relayer := NewRelayer(*krp, otherRelayers, total, threshold, currentRelayer)
+	relayer := NewRelayer(*krp, otherRelayers, total, threshold, currentRelayer, weight)
 
 	bc := chainset.NewChainCore(cfg.Name)
 	bc.InitializeClientPrefix(conn.cli)
@@ -124,7 +124,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	/// Setup listener & writer
 	l := NewListener(conn, cfg.Name, cfg.Id, startBlock, endBlock, lostAddress,
 		logger, bs, stop, sysErr, m, multiSigAddress, relayer, bc)
-	w := NewWriter(conn, l, logger, sysErr, m, useExtended, weight, relayer, bc)
+	w := NewWriter(conn, l, logger, sysErr, m, useExtended, relayer, bc)
 
 	return &Chain{
 		cfg:      cfg,

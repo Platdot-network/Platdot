@@ -356,7 +356,7 @@ func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) 
 
 			if err == nil {
 				w.log.Info(substrate.LineLog, "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
-				w.log.Info("Redeem...Submitted proposal execution", "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
+				w.log.Info("Issue...Submitted proposal execution", "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
 				w.log.Info(substrate.LineLog, "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
 				return
 			} else if err.Error() == ErrNonceTooLow.Error() || err.Error() == ErrTxUnderpriced.Error() {

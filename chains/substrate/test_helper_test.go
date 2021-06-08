@@ -2,13 +2,14 @@ package substrate
 
 import (
 	"github.com/ChainSafe/log15"
+	"github.com/Platdot-network/Platdot/config"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/rjman-ljm/platdot-utils/keystore"
 	"github.com/rjman-ljm/platdot-utils/msg"
 )
 
-const TestEndpoint = "ws://127.0.0.1:9944"
+var TestEndpoint = []string{"ws://127.0.0.1:9944"}
 
 const TestRelayerThreshold = 2
 const TestChainId = 1
@@ -47,7 +48,7 @@ func newTestLogger(name string) log15.Logger {
 // createAliceConnection creates and starts a connection with the Alice keypair
 func createAliceConnection() (*Connection, chan error, error) {
 	sysErr := make(chan error)
-	alice := NewConnection(TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), sysErr)
+	alice := NewConnection(TestEndpoint[config.InitialEndPointId], TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), sysErr)
 	err := alice.Connect()
 	if err != nil {
 		return nil, nil, err
@@ -62,7 +63,7 @@ func createAliceAndBobConnections() (*Connection, *Connection, chan error, error
 		return nil, nil, nil, err
 	}
 
-	bob := NewConnection(TestEndpoint, "Bob", BobKey, AliceTestLogger, make(chan int), sysErr)
+	bob := NewConnection(TestEndpoint[config.InitialEndPointId], TestEndpoint, "Bob", BobKey, AliceTestLogger, make(chan int), sysErr)
 	err = bob.Connect()
 	if err != nil {
 		return nil, nil, nil, err
