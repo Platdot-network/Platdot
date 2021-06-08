@@ -42,7 +42,7 @@
 
 查阅下方 `GitHub Wiki` 文档.
 
-[作为Relayer启动Platdot](https://github.com/Platdot-network/Platdot/wiki/Start-Platdot-as-a-relayer)
+[作为Relayer启动Platdot](https://github.com/Platdot-network/Platdot/wiki/Deploy-Platdot)
 
 ## License
 
