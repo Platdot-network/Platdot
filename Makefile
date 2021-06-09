@@ -39,7 +39,7 @@ lint-fix:
 	./bin/golangci-lint run ./... --timeout 5m0s --fix
 
 build:
-	@echo "  >  \033[32mBuilding binary...\033[0m "
+	@echo "  > Building binary..."
 	cd cmd/platdot && env GOARCH=amd64 go build -o ../../build/platdot $(VERSION)
 
 install:
