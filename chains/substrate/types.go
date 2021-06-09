@@ -70,21 +70,6 @@ const (
 	ProcessBlockError                     	string = "ProcessBlock err, check it"
 )
 
-//var UnKnownError = multiSigTx{
-//	Block: -2,
-//	TxId:  0,
-//}
-
-//var NotExecuted = multiSigTx{
-//	Block: -1,
-//	TxId:  0,
-//}
-
-//var YesVoted = multiSigTx{
-//	Block: -1,
-//	TxId:  1,
-//}
-
 type TimePointSafe32 struct {
 	Height types.OptionU32
 	Index  types.U32

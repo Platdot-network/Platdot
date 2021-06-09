@@ -177,7 +177,7 @@ func importPrivKey(ctx *cli.Context, keytype, datadir, key string, password []by
 		return "", fmt.Errorf("invalid key type: %s", keytype)
 	}
 
-	fp, err := filepath.Abs(keystorepath + "/" + kp.Address() + ".key")
+	fp, err := filepath.Abs(keystorepath + "/" + kp.PublicKey() + ".key")
 	if err != nil {
 		return "", fmt.Errorf("invalid filepath: %w", err)
 	}
@@ -199,7 +199,7 @@ func importPrivKey(ctx *cli.Context, keytype, datadir, key string, password []by
 		return "", fmt.Errorf("could not write key to file: %w", err)
 	}
 
-	log.Info("private key imported", "address", kp.Address(), "file", fp)
+	log.Info("private key imported", "address", kp.PublicKey(), "file", fp)
 	return fp, nil
 
 }

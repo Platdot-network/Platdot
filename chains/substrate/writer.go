@@ -233,6 +233,10 @@ func (w *writer) redeemTx(message *MsgStatus) (RedeemStatusCode, multiSigTx) {
 			w.submitTx(mc)
 			return NotExecuted, multiSigTx{}
 		} else {
+			if message.ok {
+				fmt.Printf("%v hasVote, check tx status\n", w.relayer.currentRelayer)
+			}
+
 			status, executed := w.checkRedeem(m, actualAmount)
 			if status.finished() {
 				return status, executed
