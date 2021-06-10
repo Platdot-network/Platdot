@@ -171,11 +171,11 @@ func (w *writer) redeemTx(message *MsgStatus) (RedeemStatusCode, multiSigTx) {
 	}
 
 	for {
-		processRound := (w.relayer.currentRelayer + uint64(m.DepositNonce)) % w.relayer.totalRelayers
+		processRound := (w.relayer.relayerId + uint64(m.DepositNonce)) % w.relayer.totalRelayers
 		round, height := w.getRound()
 		blockRound := round.blockRound.Uint64()
 		if blockRound == processRound && !message.ok {
-			fmt.Printf("Relayer#%v solve %v in block#%v\n", w.relayer.currentRelayer, round, height)
+			fmt.Printf("Relayer#%v solve %v in block#%v\n", w.relayer.relayerId, round, height)
 			// Try to find a exist multiSigTx
 			var maybeTimePoint interface{}
 			maxWeight := types.Weight(0)
@@ -234,7 +234,7 @@ func (w *writer) redeemTx(message *MsgStatus) (RedeemStatusCode, multiSigTx) {
 			return NotExecuted, multiSigTx{}
 		} else {
 			if message.ok {
-				fmt.Printf("%v hasVote, check tx status\n", w.relayer.currentRelayer)
+				fmt.Printf("%v hasVote, check tx status\n", w.relayer.relayerId)
 			}
 
 			status, executed := w.checkRedeem(m, actualAmount)
@@ -428,7 +428,7 @@ func (w *writer) isFinish(ms MultiSigAsMulti, m msg.Message) (RedeemStatusCode, 
 		}
 
 		if isVote {
-			w.log.Info("relayer has vote, wait others!", "DepositNonce", m.DepositNonce, "Relayer", w.relayer.currentRelayer, "Block", ms.OriginMsTx.Block, "Index", ms.OriginMsTx.TxId)
+			w.log.Info("relayer has vote, wait others!", "DepositNonce", m.DepositNonce, "Relayer", w.relayer.relayerId, "Block", ms.OriginMsTx.Block, "Index", ms.OriginMsTx.TxId)
 			return YesVoted, multiSigTx{}
 		}
 	}

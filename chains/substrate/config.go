@@ -22,12 +22,12 @@ var (
 	UseExtendedCallOpt	  = "useExtendedCall"
 	TotalRelayerOpt       = "totalRelayer"
 	//OtherRelayerOpt	  = "otherRelayer"
-	CurrentRelayerNumberOpt = "relayerId"
-	MultiSigAddressOpt      = "multiSigAddress"
-	MaxWeightOpt            = "maxWeight"
-	DestIdOpt               = "destId"
-	ResourceIdOpt           = "resourceId"
-	MultiSigThresholdOpt    = "multiSigThreshold"
+	RelayerOpt            = "relayerId"
+	MultiSigAddressOpt    = "multiSigAddress"
+	MaxWeightOpt          = "maxWeight"
+	DestIdOpt             = "destId"
+	ResourceIdOpt         = "resourceId"
+	MultiSigThresholdOpt  = "multiSigThreshold"
 
 	OtherRelayerOpt       = "otherRelayer"
 )
@@ -107,23 +107,23 @@ func parseOtherRelayer(cfg *core.ChainConfig) []types.AccountID {
 	return otherSignatories
 }
 
-func parsemultiSigConfig(cfg *core.ChainConfig) (uint64, uint64, uint16) {
+func parseMultiSigConfig(cfg *core.ChainConfig) (uint64, uint64, uint16) {
 	total := uint64(3)
-	current := uint64(1)
+	relayerId := uint64(1)
 	threshold := uint64(2)
 	if totalRelayer, ok := cfg.Opts[TotalRelayerOpt]; ok {
 		total, _ = strconv.ParseUint(totalRelayer, 10, 32)
 	}
-	if currentRelayerNumber, ok := cfg.Opts[CurrentRelayerNumberOpt]; ok {
-		current, _ = strconv.ParseUint(currentRelayerNumber, 10, 32)
-		if current == 0 {
+	if id, ok := cfg.Opts[RelayerOpt]; ok {
+		relayerId, _ = strconv.ParseUint(id, 10, 32)
+		if relayerId == 0 {
 			log.Error("Please set config opts 'CurrentRelayerNumber' from 1 to ...!")
 		}
 	}
 	if multiSigThreshold, ok := cfg.Opts[MultiSigThresholdOpt]; ok {
 		threshold, _ = strconv.ParseUint(multiSigThreshold, 10, 32)
 	}
-	return total, current, uint16(threshold)
+	return total, relayerId, uint16(threshold)
 }
 
 func parsemultiSigAddress(cfg *core.ChainConfig) types.AccountID {

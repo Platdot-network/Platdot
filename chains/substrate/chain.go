@@ -109,11 +109,11 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	useExtended := parseUseExtended(cfg)
 	otherRelayers := parseOtherRelayers(cfg)
 	multiSigAddress := parsemultiSigAddress(cfg)
-	total, currentRelayer, threshold := parsemultiSigConfig(cfg)
+	total, relayerId, threshold := parseMultiSigConfig(cfg)
 	weight := parseMaxWeight(cfg)
 
 	/// Set relayer parameters
-	relayer := NewRelayer(*krp, otherRelayers, total, threshold, currentRelayer, weight)
+	relayer := NewRelayer(*krp, otherRelayers, total, threshold, relayerId, weight)
 
 	bc := chainset.NewChainCore(cfg.Name)
 	bc.InitializeClientPrefix(conn.cli)

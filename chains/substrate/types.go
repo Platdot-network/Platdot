@@ -200,7 +200,7 @@ func (w *writer) createMultiSigTx(m msg.Message) {
 		defer func() {
 			cost := time.Since(start)
 			w.log.Info(LineLog, "DepositNonce", m.DepositNonce)
-			w.log.Info(RelayerFinishTheTx,"Relayer", w.relayer.currentRelayer, "DepositNonce", m.DepositNonce, "CostTime", cost)
+			w.log.Info(RelayerFinishTheTx,"Relayer", w.relayer.relayerId, "DepositNonce", m.DepositNonce, "CostTime", cost)
 			w.log.Info(LineLog, "DepositNonce", m.DepositNonce)
 		}()
 		retryTimes := RedeemRetryLimit
