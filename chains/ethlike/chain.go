@@ -94,7 +94,15 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 	// load key
 	ethBytes, _ := common.PlatonToEth(cfg.from)
 	ethAddress := common.BytesToAddress(ethBytes)
-	kpI, err := keystore.KeypairFromAddress(ethAddress.String(), keystore.EthChain, cfg.keystorePath, chainCfg.Insecure)
+	pwdCache := cfg.keystorePath + "/.cache"
+	kpI, err := keystore.KeypairFromAddress(
+		ethAddress.String(),
+		keystore.EthChain,
+		cfg.keystorePath,
+		chainCfg.Insecure,
+		pwdCache,
+		ethAddress.String()[:32],
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +120,6 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 	if err != nil {
 		return nil, err
 	}
-
 	err = conn.EnsureHasBytecode(cfg.bridgeContract)
 	if err != nil {
 		return nil, err

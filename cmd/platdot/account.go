@@ -6,9 +6,11 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"syscall"
 
 	log "github.com/ChainSafe/log15"
 	gokeystore "github.com/hacpy/go-ethereum/accounts/keystore"
@@ -91,7 +93,7 @@ func handleImportCmd(ctx *cli.Context, dHandler *dataHandler) error {
 			}
 			_, err = importEthKey(keyimport, dHandler.datadir, password, nil)
 		} else {
-			return fmt.Errorf("Must provide a key to import.")
+			return fmt.Errorf("must provide a key to import")
 		}
 	} else if privkeyflag := ctx.String(config.PrivateKeyFlag.Name); privkeyflag != "" {
 		// check if --password is set
@@ -100,12 +102,16 @@ func handleImportCmd(ctx *cli.Context, dHandler *dataHandler) error {
 			password = []byte(pwdflag)
 		}
 
+		if privkeyflag == "manual" {
+			privkeyflag = getPrivateKey()
+		}
+
 		_, err = importPrivKey(ctx, keytype, dHandler.datadir, privkeyflag, password)
 	} else {
 		if keyimport := ctx.Args().First(); keyimport != "" {
 			_, err = importKey(keyimport, dHandler.datadir)
 		} else {
-			return fmt.Errorf("Must provide a key to import.")
+			return fmt.Errorf("must provide a key to import")
 		}
 	}
 
@@ -116,9 +122,22 @@ func handleImportCmd(ctx *cli.Context, dHandler *dataHandler) error {
 	return nil
 }
 
+func getPrivateKey() string {
+	for {
+		fmt.Println("Enter PrivateKey to import account:")
+		fmt.Print("> ")
+		privateKey, err := terminal.ReadPassword(int(syscall.Stdin))
+		if err != nil {
+			fmt.Printf("invalid input: %s\n", err)
+		} else {
+			fmt.Printf("\n")
+			return string(privateKey)
+		}
+	}
+}
+
 // handleListCmd lists all accounts currently in the bridge
 func handleListCmd(ctx *cli.Context, dHandler *dataHandler) error {
-
 	_, err := listKeys(dHandler.datadir)
 	if err != nil {
 		return fmt.Errorf("failed to list keys: %w", err)
@@ -206,7 +225,6 @@ func importPrivKey(ctx *cli.Context, keytype, datadir, key string, password []by
 
 	log.Info("private key imported", "address", kp.PublicKey(), "file", fp)
 	return fp, nil
-
 }
 
 //importEthKey takes an ethereum keystore and converts it to our keystore format

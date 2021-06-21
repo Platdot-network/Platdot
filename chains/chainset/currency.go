@@ -28,8 +28,8 @@ const(
 
 /// Fixed handling fee for cross-chain transactions
 const (
-	FixedKSMFee = SingleKSM * 3 / 100	/// 0.03KSM
-	FixedDOTFee = SingleDOT * 5 / 10	/// 0.5DOT
+	FixedKSMFee = SingleKSM * 1 / 100	/// 0.01KSM
+	FixedDOTFee = SingleDOT * 6 / 10	/// 0.6DOT
 	FixedPCXFee = SinglePCX * 1 / 10	/// 0.1PCX
 )
 

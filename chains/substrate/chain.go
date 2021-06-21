@@ -28,7 +28,6 @@ import (
 	"github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/Platdot-network/Platdot/config"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/signature"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/blockstore"
@@ -68,7 +67,15 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	stop := make(chan int)
 	/// Load keypair
 	fromPubKey, _ := ss58.DecodeToPub(cfg.From)
-	kp, err := keystore.KeypairFromAddress(types.HexEncodeToString(fromPubKey), keystore.SubChain, cfg.KeystorePath, cfg.Insecure)
+	pwdCache := cfg.KeystorePath + "/.cache"
+	kp, err := keystore.KeypairFromAddress(
+		types.HexEncodeToString(fromPubKey),
+		keystore.SubChain,
+		cfg.KeystorePath,
+		cfg.Insecure,
+		pwdCache,
+		string(fromPubKey)[:32],
+	)
 	if err != nil {
 		fmt.Printf("keystore not found, addr is %v\n", cfg)
 		return nil, err
@@ -87,7 +94,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	lostAddress := parseLostAddress(cfg)
 
 	/// Setup connection
-	conn := NewConnection(cfg.Endpoint[config.InitialEndPointId], cfg.Endpoint, cfg.Name, (*signature.KeyringPair)(krp), logger, stop, sysErr)
+	conn := NewConnection(cfg.Endpoint[config.InitialEndPointId], cfg.Endpoint, cfg.Name, krp, logger, stop, sysErr)
 	err = conn.Connect()
 	if err != nil {
 		return nil, err

@@ -98,7 +98,7 @@ var (
 // init initializes CLI
 func init() {
 	app.Action = run
-	app.Copyright = "Copyright 2021 ChainX Authors"
+	app.Copyright = "Copyright 2021 Platdot-network Authors"
 	app.Name = "platdot"
 	app.Usage = "platdot"
 	app.Authors = []*cli.Author{{Name: "platdot 2021"}}

@@ -24,6 +24,7 @@ const(
 	ChainIdAlayaTestNet				uint64 = 201030
 	ChainIdAlayaMainNet				uint64 = 201018
 	ChainIdPlatONTestNet    		uint64 = 210309
+	ChainIdPlatONMainNet			uint64 = 100
 )
 
 var BlockRetryInterval = time.Second * 5
@@ -98,6 +99,8 @@ func (c *Connection) Connect() error {
 	case ChainIdAlayaTestNet:
 		c.conn.SetChainName("alaya-test")
 	case ChainIdPlatONTestNet:
+		c.conn.SetChainName("platon")
+	case ChainIdPlatONMainNet:
 		c.conn.SetChainName("platon")
 	default:
 		c.conn.SetChainName("alaya")
