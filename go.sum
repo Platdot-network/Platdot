@@ -452,8 +452,8 @@ github.com/rjeczalik/notify v0.9.1 h1:CLCKso/QK1snAlnhNR/CNvNiFU2saUtjV0bx3EwNeC
 github.com/rjeczalik/notify v0.9.1/go.mod h1:rKwnCoCGeuQnwBtTSPL9Dad03Vh2n40ePRrjvIXnJho=
 github.com/rjman-ljm/go-substrate-crypto v1.0.0 h1:8nuZAfQT/erlu5C3xVkxUYmundffr856JPI9VTQbjN8=
 github.com/rjman-ljm/go-substrate-crypto v1.0.0/go.mod h1:zo4Jpv1nRbszHeoXaZmJD2XPseMH+RDzDcBpMmilRgc=
-github.com/rjman-ljm/platdot-utils v1.6.2 h1:WN+8xogb+/NTBj4IBksB27orTzgCUzcYUSO3UfMBDWI=
-github.com/rjman-ljm/platdot-utils v1.6.2/go.mod h1:uZfAgSMqp3nlOsMYkKf0ux9YDIWl4BCsm5uHJWHqGu0=
+github.com/rjman-ljm/platdot-utils v1.6.4 h1:kkUQXTdHwCxbjbiNzkpm0A3X2t6pNe/LASCapNIf4jk=
+github.com/rjman-ljm/platdot-utils v1.6.4/go.mod h1:uZfAgSMqp3nlOsMYkKf0ux9YDIWl4BCsm5uHJWHqGu0=
 github.com/rjman-ljm/substrate-go v1.6.3 h1:MNf9TIo9UlYNCJEOnKdq8Ru4E5M/8zcFh4deGJHtoAY=
 github.com/rjman-ljm/substrate-go v1.6.3/go.mod h1:HDBZVYzrXo4E4j6aPBi2W14j6YUNsX+QREVh2EJNr/A=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=

@@ -69,6 +69,9 @@ const (
 	ResourceIdOrigin			string = ResourceIdPrefix + "000"
 	ResourceIdXBTC				string = ResourceIdPrefix + "001"
 	ResourceIdXAsset			string = ResourceIdPrefix + "999"
+	ResourceIdAKSM				string = ResourceIdPrefix + "000"
+	ResourceIdPDOT		    	string = ResourceIdPrefix + "002"
+
 )
 
 func (bc *ChainCore) GetCurrencyByAssetId(assetId xevents.AssetId) (*Currency, error) {

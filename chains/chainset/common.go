@@ -34,6 +34,11 @@ func IsMultiSigTransfer(id msg.ChainId) bool {
 	return id <= MultiSigLimit
 }
 
+func (bc *ChainCore) ShortenAddress(addr string) string {
+	length := len(addr)
+	return addr[:6] + "..." + addr[length-4:]
+}
+
 func (bc *ChainCore) InitializeClientPrefix(cli *client.Client) {
 	switch bc.ChainInfo.Type {
 	case PolkadotLike:

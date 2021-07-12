@@ -148,6 +148,7 @@ func (l *listener) reconnect() {
 		_, err = l.conn.cli.Api.RPC.Chain.GetFinalizedHead()
 		if err != nil {
 			time.Sleep(BlockRetryInterval)
+			ClientRetryLimit--
 			continue
 		}
 
@@ -378,12 +379,7 @@ func (l *listener) logCrossChainTx (tokenX string, tokenY string, amount *big.In
 }
 
 func (l *listener) logReadyToSend(amount *big.Int, recipient []byte, e *models.ExtrinsicResponse) {
-	currency, err := l.chainCore.GetCurrencyByAssetId(e.AssetId)
-	if err != nil {
-		fmt.Printf("unimplemented currency")
-		return
-	}
-	sendMessage := "Ready to send " + currency.Name + "..."
+	sendMessage := "Send to " + l.chainCore.ShortenAddress(string(recipient)) + "..."
 	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId)
 	l.log.Info(sendMessage, "Amount", amount, "FromId", l.chainId)
 	l.log.Info(LineLog, "Amount", amount, "FromId", l.chainId)

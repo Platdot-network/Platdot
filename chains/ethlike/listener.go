@@ -234,7 +234,7 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 		rId := msg.ResourceIdFromSlice(log.Data[32:64])
 		nonce := msg.Nonce(big.NewInt(0).SetBytes(log.Data[64:96]).Uint64())
 
-		l.log.Info("Parse event successfully.", "DestId", destId, "ResourceId", rId, "Nonce", nonce)
+		l.log.Info("Parse event successfully.", "DestId", destId, "ResourceId", rId.Shorten(), "Nonce", nonce)
 
 		addr, err := l.bridgeContract.ResourceIDToHandlerAddress(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, rId)
 		if err != nil {

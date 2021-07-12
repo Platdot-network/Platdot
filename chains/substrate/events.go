@@ -56,7 +56,7 @@ func fungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, e
 	}
 
 	resourceId := msg.ResourceId(evt.ResourceId)
-	log.Info("Got fungible transfer event!", "destination", evt.Destination, "resourceId", resourceId.Hex(), "amount", evt.Amount)
+	log.Info("Got fungible transfer event!", "destination", evt.Destination, "resourceId", resourceId.Shorten(), "amount", evt.Amount)
 
 	return msg.NewFungibleTransfer(
 		0, // Unset
@@ -74,7 +74,8 @@ func nonFungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message
 		return msg.Message{}, fmt.Errorf("failed to cast EventNonFungibleTransfer type")
 	}
 
-	log.Info("Got non-fungible transfer event!", "destination", evt.Destination, "resourceId", evt.ResourceId)
+	resourceId := msg.ResourceId(evt.ResourceId)
+	log.Info("Got non-fungible transfer event!", "destination", evt.Destination, "resourceId", resourceId.Shorten())
 
 	return msg.NewNonFungibleTransfer(
 		0, // Unset
@@ -93,7 +94,8 @@ func genericTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, er
 		return msg.Message{}, fmt.Errorf("failed to cast EventGenericTransfer type")
 	}
 
-	log.Info("Got generic transfer event!", "destination", evt.Destination, "resourceId", evt.ResourceId)
+	resourceId := msg.ResourceId(evt.ResourceId)
+	log.Info("Got generic transfer event!", "destination", evt.Destination, "resourceId", resourceId.Shorten())
 
 	return msg.NewGenericTransfer(
 		0, // Unset

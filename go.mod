@@ -10,7 +10,7 @@ require (
 	github.com/mattn/go-isatty v0.0.12 // indirect
 	github.com/prometheus/client_golang v1.4.1
 	github.com/rjman-ljm/go-substrate-crypto v1.0.0
-	github.com/rjman-ljm/platdot-utils v1.6.2
+	github.com/rjman-ljm/platdot-utils v1.6.4
 	github.com/rjman-ljm/substrate-go v1.6.3
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0

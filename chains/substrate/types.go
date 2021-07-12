@@ -154,38 +154,6 @@ func (p *proposal) encode() ([]byte, error) {
 	}{p.depositNonce, p.call})
 }
 
-func (w *writer) processMessage(m msg.Message) {
-	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
-	w.log.Info(StartATx, "DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
-	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
-
-	/// Mark isProcessing
-	destMessage := Dest{
-		DepositNonce: m.DepositNonce,
-		DestAddress:  string(m.Payload[1].([]byte)),
-		DestAmount:   string(m.Payload[0].([]byte)),
-	}
-	w.messages[destMessage] = true
-}
-
-func (w *writer) deleteMessage(m msg.Message, currentTx multiSigTx) {
-	var mutex sync.Mutex
-	mutex.Lock()
-
-	/// Delete Listener msTx
-	delete(w.listener.asMulti, currentTx)
-
-	/// Delete Message
-	dm := Dest{
-		DepositNonce: m.DepositNonce,
-		DestAddress:  string(m.Payload[1].([]byte)),
-		DestAmount:   string(m.Payload[0].([]byte)),
-	}
-	delete(w.messages, dm)
-
-	mutex.Unlock()
-}
-
 func (w *writer) createMultiSigTx(m msg.Message) {
 	/// If there is a duplicate transaction, wait for it to complete
 	w.checkRepeat(m)
@@ -427,3 +395,34 @@ func containsVote(votes []types.AccountID, voter types.AccountID) bool {
 	return false
 }
 
+func (w *writer) processMessage(m msg.Message) {
+	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
+	w.log.Info(StartATx, "DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
+	w.log.Info(LineLog,"DepositNonce", m.DepositNonce, "From", m.Source, "To", m.Destination)
+
+	/// Mark isProcessing
+	destMessage := Dest{
+		DepositNonce: m.DepositNonce,
+		DestAddress:  string(m.Payload[1].([]byte)),
+		DestAmount:   string(m.Payload[0].([]byte)),
+	}
+	w.messages[destMessage] = true
+}
+
+func (w *writer) deleteMessage(m msg.Message, currentTx multiSigTx) {
+	var mutex sync.Mutex
+	mutex.Lock()
+
+	/// Delete Listener msTx
+	delete(w.listener.asMulti, currentTx)
+
+	/// Delete Message
+	dm := Dest{
+		DepositNonce: m.DepositNonce,
+		DestAddress:  string(m.Payload[1].([]byte)),
+		DestAmount:   string(m.Payload[0].([]byte)),
+	}
+	delete(w.messages, dm)
+
+	mutex.Unlock()
+}

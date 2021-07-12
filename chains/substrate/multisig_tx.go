@@ -2,6 +2,7 @@ package substrate
 
 import (
 	"fmt"
+	log "github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/hacpy/go-ethereum/common"
@@ -91,20 +92,20 @@ func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
 				l.log.Error("parse remark error", "err", err)
 				continue
 			}
-			fmt.Printf("dest is %v, rId is %v, addresss is %v\n", destId, rId, recipient)
+			if l.checkRemark(destId, rId, recipient) {
+				depositNonce, _ := strconv.ParseInt(strconv.FormatInt(currentBlock, 10)+strconv.FormatInt(int64(e.ExtrinsicIndex), 10), 10, 64)
 
-			depositNonce, _ := strconv.ParseInt(strconv.FormatInt(currentBlock, 10)+strconv.FormatInt(int64(e.ExtrinsicIndex), 10), 10, 64)
-
-			m := msg.NewMultiSigTransfer(
-				l.chainId,
-				destId,
-				msg.Nonce(depositNonce),
-				sendAmount,
-				rId,
-				recipient[:],
-			)
-			l.logReadyToSend(sendAmount, recipient, e)
-			l.submitMessage(m, nil)
+				m := msg.NewMultiSigTransfer(
+					l.chainId,
+					destId,
+					msg.Nonce(depositNonce),
+					sendAmount,
+					rId,
+					recipient[:],
+				)
+				l.logReadyToSend(sendAmount, recipient, e)
+				l.submitMessage(m, nil)
+			}
 		}
 	}
 }
@@ -144,6 +145,15 @@ func (l *listener) parseRemark(res string) (msg.ChainId, msg.ResourceId, []byte,
 	}
 
 	return msg.ChainId(destId), l.chainCore.ConvertStringToResourceId(rId) , recipient, nil
+}
+func (l *listener) checkRemark(destId msg.ChainId, rId  msg.ResourceId, recipient []byte) bool {
+	alayaPass := l.chainId == 1 && destId == 2 && rId == l.chainCore.ConvertStringToResourceId(chainset.ResourceIdAKSM)
+	platonPass := l.chainId == 3 && destId == 4 && rId == l.chainCore.ConvertStringToResourceId(chainset.ResourceIdPDOT)
+
+	if alayaPass || platonPass {
+		log.Info("Parameter check passed", "Dest", destId, "RId", rId.Shorten(), "Recipient", l.chainCore.ShortenAddress(string(recipient)))
+	}
+	return alayaPass || platonPass
 }
 
 func (l *listener) findLostTxByAddress(currentBlock int64, e *models.ExtrinsicResponse) bool {

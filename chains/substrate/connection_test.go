@@ -1,6 +1,7 @@
 package substrate
 
 import (
+	"github.com/Platdot-network/Platdot/config"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"testing"
 )
@@ -8,7 +9,7 @@ import (
 func TestConnect_QueryStorage(t *testing.T) {
 	// Create connection with Alice key
 	errs := make(chan error)
-	conn := NewConnection(TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
+	conn := NewConnection(TestEndpoint[config.InitialEndPointId], TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
 	err := conn.Connect()
 	if err != nil {
 		t.Fatal(err)
@@ -34,7 +35,7 @@ func TestConnect_QueryStorage(t *testing.T) {
 func TestConnect_CheckChainId(t *testing.T) {
 	// Create connection with Alice key
 	errs := make(chan error)
-	conn := NewConnection(TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
+	conn := NewConnection(TestEndpoint[config.InitialEndPointId], TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
 	err := conn.Connect()
 	if err != nil {
 		t.Fatal(err)
@@ -58,7 +59,7 @@ func TestConnect_CheckChainId(t *testing.T) {
 func TestConnect_SubmitTx(t *testing.T) {
 	// Create connection with Alice key
 	errs := make(chan error)
-	conn := NewConnection(TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
+	conn := NewConnection(TestEndpoint[config.InitialEndPointId], TestEndpoint, "Alice", AliceKey, AliceTestLogger, make(chan int), errs)
 	err := conn.Connect()
 	if err != nil {
 		t.Fatal(err)
