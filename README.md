@@ -32,7 +32,7 @@ On the PlatON network, EVM's smart contract can implement custom processing beha
 
 ### Building
 
-`git clone https://github.com/RJman-self/Platdot.git`
+`git clone https://github.com/Platdot-network/Platdot.git`
 
 `make build`: Builds `platdot` in `./build`.
 
