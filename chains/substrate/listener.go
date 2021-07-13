@@ -32,15 +32,15 @@ type listener struct {
 	subscriptions map[eventName]eventHandler // Handlers for specific events
 	router        chains.Router
 	log           log15.Logger
-	stop         <-chan int
-	sysErr       chan<- error
-	latestBlock  metrics.LatestBlock
-	metrics      *metrics.ChainMetrics
-	multiSigAddr types.AccountID
-	curTx        multiSigTx
-	asMulti      map[multiSigTx]MultiSigAsMulti
-	relayer      Relayer
-	chainCore    *chainset.ChainCore
+	stop          <-chan int
+	sysErr        chan<- error
+	latestBlock   metrics.LatestBlock
+	metrics       *metrics.ChainMetrics
+	multiSigAddr  types.AccountID
+	curTx         multiSigTx
+	asMulti       map[multiSigTx]MultiSigAsMulti
+	relayer       Relayer
+	chainCore     *chainset.ChainCore
 }
 
 var ErrBlockNotReady = errors.New("required result to be 32 bytes, but got 0")
@@ -57,23 +57,23 @@ func NewListener(
 	log log15.Logger, bs blockstore.Blockstorer, stop <-chan int, sysErr chan<- error, m *metrics.ChainMetrics,
 	multiSigAddress types.AccountID, relayer Relayer, bc *chainset.ChainCore) *listener {
 	return &listener{
-		name:          	name,
-		chainId:       	id,
-		startBlock:    	startBlock,
-		endBlock:      	endBlock,
+		name:          name,
+		chainId:       id,
+		startBlock:    startBlock,
+		endBlock:      endBlock,
 		lostAddress:   lostAddress,
 		blockStore:    bs,
 		conn:          conn,
 		subscriptions: make(map[eventName]eventHandler),
-		log:          log,
-		stop:         stop,
-		sysErr:       sysErr,
-		latestBlock:  metrics.LatestBlock{LastUpdated: time.Now()},
-		metrics:      m,
-		multiSigAddr: multiSigAddress,
-		asMulti:      make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
-		relayer:      relayer,
-		chainCore:    bc,
+		log:           log,
+		stop:          stop,
+		sysErr:        sysErr,
+		latestBlock:   metrics.LatestBlock{LastUpdated: time.Now()},
+		metrics:       m,
+		multiSigAddr:  multiSigAddress,
+		asMulti:       make(map[multiSigTx]MultiSigAsMulti, InitCapacity),
+		relayer:       relayer,
+		chainCore:     bc,
 	}
 }
 
@@ -163,7 +163,7 @@ func (l *listener) reconnect() {
 func (l *listener) logBlock(currentBlock uint64) {
 	message := l.name + " listening..."
 	l.log.Debug(message, "Block", currentBlock)
-	if currentBlock % 1000 == 0 {
+	if currentBlock%1000 == 0 {
 		l.log.Info(message, "Block", currentBlock)
 	}
 }
@@ -275,8 +275,8 @@ func (l *listener) processBlockExtrinsic(currentBlock int64) {
 
 		resp, err := l.conn.cli.GetBlockByNumber(currentBlock)
 		if err != nil {
-			if retryTimes == BlockRetryLimit / 2 {
-				l.logErr(GetBlockByNumberError, err)
+			if retryTimes == BlockRetryLimit/2 {
+				l.log.Error(GetBlockByNumberError, "Error", err, "block", currentBlock)
 			}
 			time.Sleep(time.Second)
 			retryTimes--
@@ -289,7 +289,6 @@ func (l *listener) processBlockExtrinsic(currentBlock int64) {
 		break
 	}
 }
-
 
 // processEvents fetches a block and parses out the events, calling Listener.handleEvents()
 func (l *listener) processEvents(hash types.Hash) error {
@@ -364,18 +363,18 @@ func (l *listener) submitMessage(m msg.Message, err error) {
 	}
 }
 
-func (l *listener) logInfo (msg string, block int64) {
+func (l *listener) logInfo(msg string, block int64) {
 	l.log.Info(msg, "Block", block, "chain", l.name)
 }
 
-func (l *listener) logErr (msg string, err error) {
+func (l *listener) logErr(msg string, err error) {
 	l.log.Error(msg, "Error", err, "chain", l.name)
 }
 
-func (l *listener) logCrossChainTx (tokenX string, tokenY string, amount *big.Int, fee *big.Int, actualAmount *big.Int) {
+func (l *listener) logCrossChainTx(tokenX string, tokenY string, amount *big.Int, fee *big.Int, actualAmount *big.Int) {
 	message := tokenX + " to " + tokenY
 	actualTitle := "Actual_" + tokenY + "Amount"
-	l.log.Info(message,"Amount", amount, "Fee", fee, actualTitle, actualAmount)
+	l.log.Info(message, "Amount", amount, "Fee", fee, actualTitle, actualAmount)
 }
 
 func (l *listener) logReadyToSend(amount *big.Int, recipient []byte, e *models.ExtrinsicResponse) {
