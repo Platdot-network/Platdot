@@ -5,10 +5,11 @@ package substrate
 
 import (
 	"fmt"
+	"sync"
+
+	"github.com/Platdot-Network/substrate-go/client"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/hacpy/go-ethereum/log"
-	"github.com/rjman-ljm/substrate-go/client"
-	"sync"
 
 	"github.com/ChainSafe/log15"
 	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v3"

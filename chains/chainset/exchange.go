@@ -2,11 +2,12 @@ package chainset
 
 import (
 	"fmt"
+	"math/big"
+
 	log "github.com/ChainSafe/log15"
+	"github.com/Platdot-Network/substrate-go/expand/chainx/xevents"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/rjman-ljm/platdot-utils/msg"
-	"github.com/rjman-ljm/substrate-go/expand/chainx/xevents"
-	"math/big"
 )
 
 func (bc *ChainCore) GetSubChainRecipient(m msg.Message) interface{} {
@@ -74,10 +75,10 @@ func (bc *ChainCore) CalculateAmountToEth(origin []byte, singleToken int64, fixe
 	}
 	sendAmount := big.NewInt(0).Mul(actualAmount, big.NewInt(singleToken))
 
-	log.Info("Send " + token + " from " + bc.ChainName, "OriginAmount", originAmount, "SendAmount", sendAmount)
+	log.Info("Send "+token+" from "+bc.ChainName, "OriginAmount", originAmount, "SendAmount", sendAmount)
 	return sendAmount, nil
 }
 
-func logCrossChainTx (token string, actualAmount *big.Int) {
-	log.Info("Transfer " + token, "Actual_Amount", actualAmount)
+func logCrossChainTx(token string, actualAmount *big.Int) {
+	log.Info("Transfer "+token, "Actual_Amount", actualAmount)
 }

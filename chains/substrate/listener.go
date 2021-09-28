@@ -6,9 +6,9 @@ package substrate
 import (
 	"errors"
 	"fmt"
+	"github.com/Platdot-Network/substrate-go/expand/chainx"
+	"github.com/Platdot-Network/substrate-go/models"
 	"github.com/Platdot-network/Platdot/chains/chainset"
-	"github.com/rjman-ljm/substrate-go/expand/chainx"
-	"github.com/rjman-ljm/substrate-go/models"
 
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"math/big"

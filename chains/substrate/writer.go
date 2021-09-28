@@ -6,7 +6,12 @@ package substrate
 import (
 	"errors"
 	"fmt"
+	"math/big"
+	"sync"
+	"time"
+
 	"github.com/ChainSafe/log15"
+	"github.com/Platdot-Network/substrate-go/expand/chainx/xevents"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
 	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v3"
@@ -14,10 +19,6 @@ import (
 	"github.com/rjman-ljm/platdot-utils/core"
 	metrics "github.com/rjman-ljm/platdot-utils/metrics/types"
 	"github.com/rjman-ljm/platdot-utils/msg"
-	"github.com/rjman-ljm/substrate-go/expand/chainx/xevents"
-	"math/big"
-	"sync"
-	"time"
 )
 
 var _ core.Writer = &writer{}
@@ -103,7 +104,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 				continue
 			}
 
-			assetId , err := w.chainCore.ConvertResourceIdToAssetId(msg.ResourceId(prop.resourceId))
+			assetId, err := w.chainCore.ConvertResourceIdToAssetId(msg.ResourceId(prop.resourceId))
 			if err != nil {
 				w.logErr("rId to assetId err", err)
 			}
@@ -293,7 +294,7 @@ func (w *writer) verifyRedeemAddress(msgAddress []byte, txAddress string) bool {
 		fmt.Printf("parse msgAddress err")
 		return false
 	}
-	sendAddress, err := types.NewMultiAddressFromHexAccountID("0x"+ txAddress)
+	sendAddress, err := types.NewMultiAddressFromHexAccountID("0x" + txAddress)
 	if err != nil {
 		fmt.Printf("parse msTx.DestAddress err")
 		return false
@@ -457,16 +458,16 @@ func (w *writer) checkErr(msg string, err error) {
 	}
 }
 
-func (w *writer) logErr (msg string, err error) {
+func (w *writer) logErr(msg string, err error) {
 	w.log.Error(msg, "Error", err, "chain", w.listener.name)
 }
 
-func (w *writer) logInfo (msg string, block int64) {
+func (w *writer) logInfo(msg string, block int64) {
 	w.log.Info(msg, "Block", block, "chain", w.listener.name)
 }
 
-func (w *writer) logCrossChainTx (tokenX string, tokenY string, amount *big.Int, fee *big.Int, actualAmount *big.Int) {
+func (w *writer) logCrossChainTx(tokenX string, tokenY string, amount *big.Int, fee *big.Int, actualAmount *big.Int) {
 	message := tokenX + " to " + tokenY
 	actualTitle := "Actual_" + tokenY + "Amount"
-	w.log.Info(message,"Amount", amount, "Fee", fee, actualTitle, actualAmount)
+	w.log.Info(message, "Amount", amount, "Fee", fee, actualTitle, actualAmount)
 }

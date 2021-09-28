@@ -3,20 +3,20 @@ package chainset
 import (
 	"bytes"
 	"fmt"
+	"github.com/Platdot-Network/substrate-go/expand/chainx/xevents"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
 	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v3"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/scale"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
-	"github.com/rjman-ljm/substrate-go/expand/chainx/xevents"
 )
 
 type option struct {
-	HasValue 		bool
+	HasValue bool
 }
 
 type OptionAssetId struct {
-	Option	 		option
-	Value 			xevents.AssetId
+	Option option
+	Value  xevents.AssetId
 }
 
 func NewOptionAssetId(assetId xevents.AssetId) OptionAssetId {
@@ -62,7 +62,7 @@ func (bc *ChainCore) ResourceIdToAssetId(api *gsrpc.SubstrateAPI, meta *types.Me
 		fmt.Println("encode rId err")
 	}
 
-	exists, assetId , err := bc.queryStorage(api, meta, utils.HandlerStoragePrefix, "CurrencyIds", rIdBytes, nil, &res)
+	exists, assetId, err := bc.queryStorage(api, meta, utils.HandlerStoragePrefix, "CurrencyIds", rIdBytes, nil, &res)
 	if err != nil {
 		return nil, err
 	}

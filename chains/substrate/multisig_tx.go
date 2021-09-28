@@ -2,17 +2,18 @@ package substrate
 
 import (
 	"fmt"
+	"math/big"
+	"strconv"
+
 	log "github.com/ChainSafe/log15"
+	"github.com/Platdot-Network/substrate-go/expand"
+	"github.com/Platdot-Network/substrate-go/expand/base"
+	"github.com/Platdot-Network/substrate-go/models"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
 	"github.com/hacpy/go-ethereum/common"
 	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/msg"
-	"github.com/rjman-ljm/substrate-go/expand"
-	"github.com/rjman-ljm/substrate-go/expand/base"
-	"github.com/rjman-ljm/substrate-go/models"
-	"math/big"
-	"strconv"
 )
 
 const HexPrefix = "hex"
@@ -27,17 +28,17 @@ type multiSigTx struct {
 }
 
 type MultiSigAsMulti struct {
-	OriginMsTx     		multiSigTx
-	Executed       		bool
-	Threshold      		uint16
-	Others         		[]OtherSignatories
-	MaybeTimePoint 		expand.TimePointSafe32
-	DestAddress    		string
-	DestAmount     		string
-	StoreCall      		bool
-	MaxWeight      		uint64
-	DepositNonce   		msg.Nonce
-	YesVote        		[]types.AccountID
+	OriginMsTx     multiSigTx
+	Executed       bool
+	Threshold      uint16
+	Others         []OtherSignatories
+	MaybeTimePoint expand.TimePointSafe32
+	DestAddress    string
+	DestAmount     string
+	StoreCall      bool
+	MaxWeight      uint64
+	DepositNonce   msg.Nonce
+	YesVote        []types.AccountID
 }
 
 func (l *listener) dealBlockTx(resp *models.BlockResponse, currentBlock int64) {
@@ -144,9 +145,9 @@ func (l *listener) parseRemark(res string) (msg.ChainId, msg.ResourceId, []byte,
 		recipient = recipientAccount[:]
 	}
 
-	return msg.ChainId(destId), l.chainCore.ConvertStringToResourceId(rId) , recipient, nil
+	return msg.ChainId(destId), l.chainCore.ConvertStringToResourceId(rId), recipient, nil
 }
-func (l *listener) checkRemark(destId msg.ChainId, rId  msg.ResourceId, recipient []byte) bool {
+func (l *listener) checkRemark(destId msg.ChainId, rId msg.ResourceId, recipient []byte) bool {
 	alayaPass := l.chainId == 1 && destId == 2 && rId == l.chainCore.ConvertStringToResourceId(chainset.ResourceIdAKSM)
 	platonPass := l.chainId == 3 && destId == 4 && rId == l.chainCore.ConvertStringToResourceId(chainset.ResourceIdPDOT)
 

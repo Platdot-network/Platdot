@@ -42,6 +42,10 @@ github.com/ChainSafe/log15 v1.0.0 h1:vRDVtWtVwIH5uSCBvgTTZh6FA58UBJ6+QiiypaZfBf8
 github.com/ChainSafe/log15 v1.0.0/go.mod h1:5v1+ALHtdW0NfAeeoYyKmzCAMcAeqkdhIg4uxXWIgOg=
 github.com/DATA-DOG/go-sqlmock v1.3.3/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
+github.com/Platdot-Network/substrate-go v1.6.4 h1:F11fgz0qgxkG9iGVfDSTc8UGlri9RRu63l7tGQ1Gkuk=
+github.com/Platdot-Network/substrate-go v1.6.4/go.mod h1:fon3py/LM6pKitR72jx4X3wlJ6secPZrS9EpOSnAGmU=
+github.com/Platdot-Network/substrate-go v1.6.6 h1:TO8FYa9uccuimPLM5bVjJm/CnUyg42lXyfsjFEjkNd4=
+github.com/Platdot-Network/substrate-go v1.6.6/go.mod h1:pr1Rq9WGdLwVWTZkf81htku3Nx4FCN4LlrWcKBezdCs=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 h1:fLjPD/aNc3UIOA6tDi6QXUemppXK3P9BI7mr2hd6gx8=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/VictoriaMetrics/fastcache v1.5.7/go.mod h1:ptDBkNMQI4RtmVo8VS/XwRY6RoTu1dAWCbrk+6WsEM8=
@@ -454,8 +458,6 @@ github.com/rjman-ljm/go-substrate-crypto v1.0.0 h1:8nuZAfQT/erlu5C3xVkxUYmundffr
 github.com/rjman-ljm/go-substrate-crypto v1.0.0/go.mod h1:zo4Jpv1nRbszHeoXaZmJD2XPseMH+RDzDcBpMmilRgc=
 github.com/rjman-ljm/platdot-utils v1.6.5 h1:P2GorDcooO9+BKP2ASX17HHmyN9onldEplTfk+1CPNs=
 github.com/rjman-ljm/platdot-utils v1.6.5/go.mod h1:2a3mr1qT1I/cVLnHaDV5zKZp/M3zmAhiYFgd4drRCAA=
-github.com/rjman-ljm/substrate-go v1.6.4 h1:F11fgz0qgxkG9iGVfDSTc8UGlri9RRu63l7tGQ1Gkuk=
-github.com/rjman-ljm/substrate-go v1.6.4/go.mod h1:fon3py/LM6pKitR72jx4X3wlJ6secPZrS9EpOSnAGmU=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/rs/cors v0.0.0-20160617231935-a62a804a8a00/go.mod h1:gFx+x8UowdsKA9AchylcLynDq+nNFfI8FkUZdN/jGCU=

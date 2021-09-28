@@ -2,9 +2,10 @@ package chainset
 
 import (
 	"fmt"
+
+	"github.com/Platdot-Network/substrate-go/expand/chainx/xevents"
 	"github.com/hacpy/go-ethereum/common"
 	"github.com/rjman-ljm/platdot-utils/msg"
-	"github.com/rjman-ljm/substrate-go/expand/chainx/xevents"
 )
 
 // The Eth-Like precision is 18 bits.
@@ -18,60 +19,59 @@ const (
 )
 
 // The precision-difference constant between Eth-Like and Sub-Like
-const(
-	DiffKSM    = 1000000     	/// KSM    is 12 digits
-	DiffDOT    = 100000000   	/// DOT    is 10 digits
-	DiffXBTC   = 10000000000 	/// XBTC   is 8  digits
-	DiffPCX    = 10000000000 	/// PCX	   is 8  digits
-	DiffXAsset = 10000000000 	/// XAsset is 8  digits
+const (
+	DiffKSM    = 1000000     /// KSM    is 12 digits
+	DiffDOT    = 100000000   /// DOT    is 10 digits
+	DiffXBTC   = 10000000000 /// XBTC   is 8  digits
+	DiffPCX    = 10000000000 /// PCX	   is 8  digits
+	DiffXAsset = 10000000000 /// XAsset is 8  digits
 )
 
 /// Fixed handling fee for cross-chain transactions
 const (
-	FixedKSMFee = SingleKSM * 1 / 100	/// 0.01KSM
-	FixedDOTFee = SingleDOT * 6 / 10	/// 0.6DOT
-	FixedPCXFee = SinglePCX * 1 / 10	/// 0.1PCX
+	FixedKSMFee = SingleKSM * 1 / 100 /// 0.01KSM
+	FixedDOTFee = SingleDOT * 6 / 10  /// 0.6DOT
+	FixedPCXFee = SinglePCX * 1 / 10  /// 0.1PCX
 )
 
 // ExtraFeeRate Additional formalities rate excluding fixed handling fee
 const (
-	ExtraFeeRate int64 = 1000
+	ExtraFeeRate     int64 = 1000
 	ExtraNoneFeeRate int64 = 0
 )
 
 type Currency struct {
 	/// Set the token of the native token to zero
-	AssetId			xevents.AssetId
-	ResourceId      string
-	Name			string
-	Difference		int64
-	FixedFee		int64
-	ExtraFeeRate    int64
+	AssetId      xevents.AssetId
+	ResourceId   string
+	Name         string
+	Difference   int64
+	FixedFee     int64
+	ExtraFeeRate int64
 }
 
 var currencies = []Currency{
-	{OriginAsset, 	ResourceIdOrigin, TokenKSM, 		DiffKSM, 		FixedKSMFee, ExtraFeeRate},
-	{OriginAsset, 	ResourceIdOrigin, TokenDOT, 		DiffDOT, 		FixedDOTFee, ExtraFeeRate},
-	{OriginAsset, 	ResourceIdOrigin, TokenPCX, 		DiffPCX, 		FixedPCXFee, ExtraFeeRate},
-	{AssetXBTC, 		ResourceIdXBTC,   TokenXBTC	, 	DiffXBTC, 	    0,			 ExtraNoneFeeRate},
-	{XAssetId, 		ResourceIdXAsset ,TokenXAsset, 	DiffXAsset, 	0,			 ExtraNoneFeeRate},
+	{OriginAsset, ResourceIdOrigin, TokenKSM, DiffKSM, FixedKSMFee, ExtraFeeRate},
+	{OriginAsset, ResourceIdOrigin, TokenDOT, DiffDOT, FixedDOTFee, ExtraFeeRate},
+	{OriginAsset, ResourceIdOrigin, TokenPCX, DiffPCX, FixedPCXFee, ExtraFeeRate},
+	{AssetXBTC, ResourceIdXBTC, TokenXBTC, DiffXBTC, 0, ExtraNoneFeeRate},
+	{XAssetId, ResourceIdXAsset, TokenXAsset, DiffXAsset, 0, ExtraNoneFeeRate},
 }
 
 /// AssetId Type
 const (
-	OriginAsset			xevents.AssetId = 0
-	AssetXBTC			xevents.AssetId = 1
-	XAssetId			xevents.AssetId = 999
+	OriginAsset xevents.AssetId = 0
+	AssetXBTC   xevents.AssetId = 1
+	XAssetId    xevents.AssetId = 999
 )
 
 const ResourceIdPrefix = "0000000000000000000000000000000000000000000000000000000000000"
 const (
-	ResourceIdOrigin			string = ResourceIdPrefix + "000"
-	ResourceIdXBTC				string = ResourceIdPrefix + "001"
-	ResourceIdXAsset			string = ResourceIdPrefix + "999"
-	ResourceIdAKSM				string = ResourceIdPrefix + "000"
-	ResourceIdPDOT		    	string = ResourceIdPrefix + "002"
-
+	ResourceIdOrigin string = ResourceIdPrefix + "000"
+	ResourceIdXBTC   string = ResourceIdPrefix + "001"
+	ResourceIdXAsset string = ResourceIdPrefix + "999"
+	ResourceIdAKSM   string = ResourceIdPrefix + "000"
+	ResourceIdPDOT   string = ResourceIdPrefix + "002"
 )
 
 func (bc *ChainCore) GetCurrencyByAssetId(assetId xevents.AssetId) (*Currency, error) {
