@@ -46,6 +46,8 @@ github.com/Platdot-Network/substrate-go v1.6.4 h1:F11fgz0qgxkG9iGVfDSTc8UGlri9RR
 github.com/Platdot-Network/substrate-go v1.6.4/go.mod h1:fon3py/LM6pKitR72jx4X3wlJ6secPZrS9EpOSnAGmU=
 github.com/Platdot-Network/substrate-go v1.6.6 h1:TO8FYa9uccuimPLM5bVjJm/CnUyg42lXyfsjFEjkNd4=
 github.com/Platdot-Network/substrate-go v1.6.6/go.mod h1:pr1Rq9WGdLwVWTZkf81htku3Nx4FCN4LlrWcKBezdCs=
+github.com/Platdot-Network/substrate-go v1.6.7 h1:3SOe0ffBuKbteKp3yVWDhBddpbEJ9SPLItJnhc9NC2c=
+github.com/Platdot-Network/substrate-go v1.6.7/go.mod h1:pr1Rq9WGdLwVWTZkf81htku3Nx4FCN4LlrWcKBezdCs=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 h1:fLjPD/aNc3UIOA6tDi6QXUemppXK3P9BI7mr2hd6gx8=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/VictoriaMetrics/fastcache v1.5.7/go.mod h1:ptDBkNMQI4RtmVo8VS/XwRY6RoTu1dAWCbrk+6WsEM8=
