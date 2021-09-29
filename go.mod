@@ -6,7 +6,7 @@ replace github.com/centrifuge/go-substrate-rpc-client/v3 v3.0.2 => github.com/ch
 
 require (
 	github.com/ChainSafe/log15 v1.0.0
-	github.com/Platdot-Network/substrate-go v1.6.7
+	github.com/Platdot-Network/substrate-go v1.6.8
 	github.com/centrifuge/go-substrate-rpc-client/v3 v3.0.2
 	github.com/hacpy/chainbridge-substrate-events v1.0.0
 	github.com/hacpy/go-ethereum v1.14.1
