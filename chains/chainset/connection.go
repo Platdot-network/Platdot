@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/Platdot-Network/substrate-go/expand/chainx/xevents"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
-	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v3"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/scale"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	gsrpc "github.com/Platdot-Network/go-substrate-rpc-client/v3"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/scale"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 )
 
 type option struct {

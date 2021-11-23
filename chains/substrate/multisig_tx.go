@@ -10,7 +10,7 @@ import (
 	"github.com/Platdot-Network/substrate-go/expand/base"
 	"github.com/Platdot-Network/substrate-go/models"
 	"github.com/Platdot-network/Platdot/chains/chainset"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 	"github.com/hacpy/go-ethereum/common"
 	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/msg"

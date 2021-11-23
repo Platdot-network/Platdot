@@ -1,8 +1,8 @@
 package substrate
 
 import (
-	"github.com/centrifuge/go-substrate-rpc-client/v3/signature"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/signature"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 )
 
 type Relayer struct {

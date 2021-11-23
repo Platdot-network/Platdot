@@ -28,7 +28,8 @@ import (
 	"github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/chains/chainset"
 	"github.com/Platdot-network/Platdot/config"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/signature"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 	"github.com/rjman-ljm/go-substrate-crypto/ss58"
 	"github.com/rjman-ljm/platdot-utils/blockstore"
 	"github.com/rjman-ljm/platdot-utils/core"
@@ -94,7 +95,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	lostAddress := parseLostAddress(cfg)
 
 	/// Setup connection
-	conn := NewConnection(cfg.Endpoint[config.InitialEndPointId], cfg.Endpoint, cfg.Name, krp, logger, stop, sysErr)
+	conn := NewConnection(cfg.Endpoint[config.InitialEndPointId], cfg.Endpoint, cfg.Name, (*signature.KeyringPair)(krp), logger, stop, sysErr)
 	err = conn.Connect()
 	if err != nil {
 		return nil, err
@@ -120,7 +121,7 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 	weight := parseMaxWeight(cfg)
 
 	/// Set relayer parameters
-	relayer := NewRelayer(*krp, otherRelayers, total, threshold, relayerId, weight)
+	relayer := NewRelayer(signature.KeyringPair(*krp), otherRelayers, total, threshold, relayerId, weight)
 
 	bc := chainset.NewChainCore(cfg.Name)
 	bc.InitializeClientPrefix(conn.cli)

@@ -4,7 +4,7 @@ import (
 	"github.com/ChainSafe/log15"
 	"github.com/Platdot-network/Platdot/config"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 	"github.com/rjman-ljm/platdot-utils/keystore"
 	"github.com/rjman-ljm/platdot-utils/msg"
 )

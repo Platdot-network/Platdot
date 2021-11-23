@@ -9,7 +9,7 @@ import (
 
 	"github.com/ChainSafe/log15"
 	utils "github.com/Platdot-network/Platdot/shared/substrate"
-	"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/Platdot-Network/go-substrate-rpc-client/v3/types"
 )
 
 var TestTimeout = time.Second * 15
