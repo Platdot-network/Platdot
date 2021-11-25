@@ -335,7 +335,7 @@ func (w *writer) submitTx(c types.Call) {
 			continue
 		}
 
-		key, err := types.CreateStorageKey(meta, "System", "Account", w.relayer.kr.PublicKey, nil)
+		key, err := types.CreateStorageKey(meta, "System", "Account", w.relayer.kr.PublicKey)
 		if err != nil {
 			w.logErr(CreateStorageKeyError, err)
 			retryTimes--
